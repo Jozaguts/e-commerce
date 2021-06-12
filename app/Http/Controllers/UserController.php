@@ -6,10 +6,10 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Testing\Fluent\Concerns\Has;
 
 class UserController extends Controller
 {
@@ -27,7 +27,7 @@ class UserController extends Controller
     }
 
 
-    public function store(UserStoreRequest $request): \Illuminate\Http\JsonResponse
+    public function store(UserStoreRequest $request): JsonResponse
     {
         try {
             $password   = Hash::make($request->get('password'));
@@ -54,7 +54,7 @@ class UserController extends Controller
     }
 
 
-    public function update(UserUpdateRequest $request, User $user): \Illuminate\Http\JsonResponse
+    public function update(UserUpdateRequest $request, User $user): JsonResponse
     {
         try {
             if($request->has('password')) {
@@ -77,8 +77,18 @@ class UserController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(User $user): JsonResponse
     {
-        echo 'destroy';
+        try {
+           $user->delete();
+            return response()->json([
+                'message' =>'The user was deleted successfully'
+            ],200);
+        }catch (ModelNotFoundException  $e){
+            Log::error($e->getMessage(), ['file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString()]);
+            return response()->json( [
+                'message' => $e->getMessage()
+            ], $e->getCode() );
+        }
     }
 }
