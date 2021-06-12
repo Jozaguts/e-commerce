@@ -4,10 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\MediaLibrary\MediaCollections\FileAdder;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+/**
+ * @method static create(array $array)
+ */
+class Product extends Model implements HasMedia
 {
-    use HasFactory;
+    use InteractsWithMedia, HasFactory;
 
     protected $fillable = ['name', 'slug', 'description', 'price', 'status'];
+
+    /**
+     * @throws InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(375)
+            ->height(250);
+    }
+
 }
