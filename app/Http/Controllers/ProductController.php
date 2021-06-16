@@ -7,6 +7,7 @@ use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -14,13 +15,14 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         try {
-           return  Product::with('media')->simplePaginate(60);
+          $products =  Product::with('media')->paginate(9);
+          return response()->json($products);
         }catch(Exception $e){
             return response()->json( [
                 'message' => $e->getMessage()
-            ], $e->getCode() );
+            ], 400 );
         }
 
 
@@ -37,7 +39,11 @@ class ProductController extends Controller
            ]);
 
            if($request->hasFile('image')) {
-               $product->addMedia($request->image)->toMediaCollection('products');
+               $product->addMedia($request->image)
+                   ->toMediaCollection();
+                $media  = $product->getFirstMedia();
+                $media->setCustomProperty('url',$media->getUrl());
+               $media->save();
            }
            return response()->json( [
                'message' => $product] );
@@ -46,29 +52,55 @@ class ProductController extends Controller
            Log::error($e->getMessage(), ['file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString()]);
            return response()->json( [
                'message' => $e->getMessage()
-           ], $e->getCode() );
+           ], 400);
        }
+    }
+    public function show(Product $product)
+    {
+        try {
+            $response = [];
+            $mediaItems = $product->getMedia();
+            $response['public_url'] = $mediaItems[0]->getUrl();
+            $response['product'] = $product;
+            return  response()->json($response);
+        }catch(Exception $e){
+            return response()->json( [
+                'message' => $e->getMessage()
+            ], 400 );
+        }
     }
     public function update(ProductUpdateRequest $request, Product $product): JsonResponse
     {
         try{
-
-            $request->request->add(['slug' => Str::slug($request->get('name'))]);
-            $product->update($request->all());
+            $response = [];
+            $product->update([
+                'name' => $request->get('name'),
+                'description' => $request->get('description'),
+                'price' => $request->get('price'),
+                'status' => $request->get('status'),
+                'slug' =>  Str::slug($request->get('name')),
+            ]);
 
             if($request->hasFile('image')) {
-                $productMedia = $product->getMedia('products');
-                $productMedia[0]->delete();
-                $product->addMedia($request->image)->toMediaCollection('products');
+                $productMedia = $product->getMedia();
+                if(isset($productMedia[0])){
+                    $productMedia[0]->delete();
+                }
+                $product->addMedia($request->image)
+                    ->preservingOriginal()
+                    ->toMediaCollection();
             }
-            return response()->json( [
-                'message' => $product] );
+
+            $response['media'] = $product->getFirstMedia();
+            $response['product'] = $product;
+
+            return response()->json($response);
 
         }catch (Exception $e){
             Log::error($e->getMessage(), ['file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString()]);
             return response()->json( [
                 'message' => $e->getMessage()
-            ], $e->getCode() );
+            ],  401 );
         }
     }
     public function destroy(Product $product): JsonResponse
