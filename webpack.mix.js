@@ -19,3 +19,4 @@ mix.js('resources/js/app.js', 'public/js').vue()
 mix.browserSync({
     proxy: 'e-commerce.test:8080'
 });
+mix.disableSuccessNotifications();
