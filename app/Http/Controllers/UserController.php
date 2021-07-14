@@ -38,7 +38,8 @@ class UserController extends Controller
             ]);
             return response()->json([
                 'user' => $user,
-                'message' => 'user was created successfully'
+                'message' => 'user was created successfully',
+                'success' => true
             ],201);
         }catch(Exception $e){
             Log::error($e->getMessage(), ['file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString()]);
@@ -56,22 +57,25 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user): JsonResponse
     {
+
         try {
+
             if($request->has('password')) {
-                $passwordHashed = Hash::make($request->get('password'));
-                $request->password = $passwordHashed;
+                $user->update(['password'=> Hash::make($request->get('password'))]);
             }
-            $user->update($request->all());
+
+            $user->update($request->only('email','name'));
 
             return response()->json([
                 'user' => $user,
-                'message' =>'The user was updated successfully'
+                'message' =>'The user was updated successfully',
+                'success' => true
             ],200);
         }catch (Exception $e){
             Log::error($e->getMessage(), ['file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString()]);
             return response()->json( [
                 'message' => $e->getMessage()
-            ], $e->getCode() );
+            ], 422 );
         }
 
     }
@@ -82,7 +86,8 @@ class UserController extends Controller
         try {
            $user->delete();
             return response()->json([
-                'message' =>'The user was deleted successfully'
+                'message' =>'The user was deleted successfully',
+                'success' => true
             ],200);
         }catch (ModelNotFoundException  $e){
             Log::error($e->getMessage(), ['file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString()]);
