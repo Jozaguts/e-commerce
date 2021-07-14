@@ -29,23 +29,14 @@
                            {{currentProduct.product_data.price}}
                            </p>
                            <v-spacer />
-                           <v-btn
-                               elevation="2"
-                               outlined
-                               tile
-                               x-large
-                           >
-                               <v-icon>
-                                   mdi-cart
-                               </v-icon>
-                           </v-btn>
+                           <cart-btn :product="currentProduct.product_data" />
                        </v-card-actions>
                    </v-card>
            </v-col>
            <v-col cols="12" class="mt-5">
-               <h2>Producs list</h2>
+               <h2>Products list</h2>
            </v-col>
-           <v-col cols="12">
+           <v-col  v-if="!loading" cols="12">
                <productsList/>
            </v-col>
        </v-row>
@@ -53,12 +44,13 @@
 </template>
 <script>
 import productsList from '../components/list-products'
+import CartBtn from '../components/cart-btn'
 export default {
     name: "ProductDetails",
-    components:{productsList},
+    components:{productsList,CartBtn},
     data(){
         return {
-            loading:true
+            loading: true
         }
     },
     beforeMount() {
