@@ -14,10 +14,7 @@
             </v-col>
         </v-row>
     </v-container>
-
-
 </template>
-
 <script>
 import productList from '../components/list-products'
 export default {
@@ -25,7 +22,3 @@ export default {
     components:{productList}
 }
 </script>
-
-<style scoped>
-
-</style>
