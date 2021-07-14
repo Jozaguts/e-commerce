@@ -8,7 +8,6 @@
                 class="logo"
             />
         </router-link>
-
         <ul class="d-flex">
             <li>
                 <v-btn
@@ -43,10 +42,22 @@
                     x-large
                     text
                     color="primary"
-                    class="align-center">
-                  <v-icon>
-                      mdi-cart
-                  </v-icon>
+                    @click="showCart"
+                    class="align-center"
+                >
+                    <v-badge
+                        color="green"
+                        overlap
+                        :value="cartSize"
+                        :content="cartSize"
+
+                    >
+                    <v-icon
+                        large
+                    >
+                        mdi-cart
+                    </v-icon>
+                    </v-badge>
                 </v-btn>
             </li>
         </ul>
@@ -55,7 +66,21 @@
 
 <script>
 export default {
-    name: "navbar"
+    name: "navbar",
+    computed:{
+        cartSize() {
+            return this.$store.getters['cart/getCartSize']
+        }
+    },
+    methods:{
+        showCart(){
+            try{
+                this.$store.commit('cart/TOGGLE_SHOW_CART')
+            }catch (e) {
+                console.error(e.message)
+            }
+        }
+    }
 }
 </script>
 
