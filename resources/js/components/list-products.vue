@@ -26,25 +26,18 @@
                            </v-icon>
                            {{product.price}}
                        </span>
-
                         <v-btn
                             text
                             class="ml-2"
                             :to="product.slug"
+                            :exact="true"
+                            exact-active-class="''"
                         >
                             Details
                         </v-btn>
                         <v-spacer />
-                        <v-btn
-                            color="deep-green darken-2"
-                            text
-                        >
-                          <v-icon color="green">
-                              mdi-cart
-                          </v-icon>
-                        </v-btn>
-
-
+                    <!-- btn component-->
+                      <cart-btn :product="product" />
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -60,8 +53,10 @@
 </template>
 
 <script>
+import CartBtn from "./cart-btn";
 export default {
     name: "list-products",
+    components:{CartBtn},
     data () {
         return {
             page: 1,
