@@ -1,20 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import auth from './auth'
-// import global from './global'
+import createPersistedState from "vuex-persistedstate";
+import auth from './auth'
 import products from './products'
-// import cart from './cart'
-// import users from './users'
-// import VuexLocal from '../plugins/vuex-persist'
+import cart from './cart'
+import users from './users'
 Vue.use(Vuex)
-
+const cartState = createPersistedState()
+const authState = createPersistedState({
+    paths: ['auth','cart']
+})
 export default new Vuex.Store({
     modules: {
-        // global,
-        // auth,
+        auth,
         products,
-        // cart,
-        // users
+        cart,
+        users
     },
-    // plugins: [VuexLocal.plugin]
+    plugins: [cartState,authState]
 })
