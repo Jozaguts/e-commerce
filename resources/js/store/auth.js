@@ -12,7 +12,7 @@ const auth = {
         },
         AUTHENTICATED(state) {
             state.isAuthenticated = !state.isAuthenticated
-        }
+        },
     },
     actions: {
         async login({ commit , state }, credentials) {
@@ -23,13 +23,12 @@ const auth = {
                           commit('SET_TOKEN', data.access_token)
                           commit('AUTHENTICATED')
                          window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token
-                         resolve();
+                         resolve('success');
                      })
                  }
              })
              .then( async ()=> await router.push('/admin'))
-            .catch(e => console.error(e.message))
-
+             .catch(error => error)
         }
     },
     getters: {
