@@ -5,14 +5,14 @@ import store from './store/index'
 import Home from './pages/Home.vue'
 import ProductDetails from './pages/Details.vue'
 import Checkout from './pages/Checkout.vue'
-import Admin from './pages/Admin.vue'
+import Admin from './pages/admin/index.vue'
 // import Products from './views/Products.vue'
 // import CheckOut from "./views/CheckOut.vue"
 // import Error404 from './views/Errors/404.vue'
 // import ProductDetails from './components/Products/Details'
 import Login from './components/Auth/Login.vue'
-import UsersTable from './components/Users/Table.vue';
-import UserForm from './components/Users/Form.vue'
+import UsersTable from './pages/admin/users/Table.vue';
+import UserForm from './pages/admin/users/Form.vue'
 
 Vue.use(VueRouter)
 
