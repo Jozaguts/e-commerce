@@ -13,6 +13,9 @@ const auth = {
         AUTHENTICATED(state) {
             state.isAuthenticated = !state.isAuthenticated
         },
+        DELETE_TOKEN(state) {
+            state.token = undefined;
+        }
     },
     actions: {
         async login({ commit , state }, credentials) {
@@ -29,6 +32,18 @@ const auth = {
              })
              .then( async ()=> await router.push('/admin'))
              .catch(error => error)
+        },
+        async logout({commit, dispatch}) {
+
+            return await axios.post('/api/users/logout')
+                .then(response=>{
+                    if(response.data.success){
+                        commit('DELETE_TOKEN')
+                        commit('AUTHENTICATED')
+                    }
+                })
+                .then( async ()=> await   router.push({name:'home'}))
+                .catch(error => error)
         }
     },
     getters: {

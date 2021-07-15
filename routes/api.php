@@ -15,6 +15,7 @@ Route::group(['middleware' => 'auth:api','prefix'=>'/users'],  function() {
    Route::get('/{user}',[ UserController::class, 'show' ]);
    Route::put('/{user}',[ UserController::class, 'update' ]);
    Route::delete('/{user}',[ UserController::class, 'destroy' ]);
+   Route::post('/logout',[ LoginController::class, 'logout']);
 });
 Route::get('/products', [ProductController::class,'index']);
 Route::get('/products/{product:slug}', [ProductController::class,'show']);

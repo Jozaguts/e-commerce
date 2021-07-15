@@ -23,6 +23,17 @@
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
+                    <template v-slot:append>
+                        <div class="pa-2">
+                            <v-btn
+                                @click="$store.dispatch('auth/logout')"
+                                color="green lighten-4"
+                                block
+                            >
+                                Logout
+                            </v-btn>
+                        </div>
+                    </template>
                 </v-navigation-drawer>
             </v-col>
         </v-row>

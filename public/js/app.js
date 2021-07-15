@@ -2918,6 +2918,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Admin",
@@ -3479,6 +3490,9 @@ var auth = {
     },
     AUTHENTICATED: function AUTHENTICATED(state) {
       state.isAuthenticated = !state.isAuthenticated;
+    },
+    DELETE_TOKEN: function DELETE_TOKEN(state) {
+      state.token = undefined;
     }
   },
   actions: {
@@ -3553,6 +3567,54 @@ var auth = {
             }
           }
         }, _callee3);
+      }))();
+    },
+    logout: function logout(_ref5) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        var commit, dispatch;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                commit = _ref5.commit, dispatch = _ref5.dispatch;
+                _context5.next = 3;
+                return axios.post('/api/users/logout').then(function (response) {
+                  if (response.data.success) {
+                    commit('DELETE_TOKEN');
+                    commit('AUTHENTICATED');
+                  }
+                }).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+                    while (1) {
+                      switch (_context4.prev = _context4.next) {
+                        case 0:
+                          _context4.next = 2;
+                          return _router__WEBPACK_IMPORTED_MODULE_1__.default.push({
+                            name: 'home'
+                          });
+
+                        case 2:
+                          return _context4.abrupt("return", _context4.sent);
+
+                        case 3:
+                        case "end":
+                          return _context4.stop();
+                      }
+                    }
+                  }, _callee4);
+                })))["catch"](function (error) {
+                  return error;
+                });
+
+              case 3:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 4:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     }
   },
@@ -24939,7 +25001,45 @@ var render = function() {
             [
               _c(
                 "v-navigation-drawer",
-                { attrs: { app: "" } },
+                {
+                  attrs: { app: "" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "append",
+                      fn: function() {
+                        return [
+                          _c(
+                            "div",
+                            { staticClass: "pa-2" },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    color: "green lighten-4",
+                                    block: ""
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.$store.dispatch("auth/logout")
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Logout\n                        "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]
+                      },
+                      proxy: true
+                    }
+                  ])
+                },
                 [
                   _c(
                     "v-list",
