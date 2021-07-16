@@ -2,7 +2,7 @@ const users = {
     namespaced: true,
     state: {
        users: [],
-        user: undefined
+        user: undefined,
     },
     mutations: {
         SET_USERS(state, users) {
@@ -10,7 +10,7 @@ const users = {
         },
         SET_USER(state, user) {
             state.user = user
-        }
+        },
     },
     actions: {
         async getUsers({commit}) {
@@ -79,7 +79,9 @@ const users = {
         }
     },
     getters: {
-
+        getCurrentUser(){
+            return JSON.parse( window.localStorage.getItem('currentUser'))
+        }
     }
 }
 export default users

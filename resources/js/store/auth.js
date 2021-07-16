@@ -18,28 +18,27 @@ const auth = {
         }
     },
     actions: {
-        async login({ commit , state }, credentials) {
+        async login({ commit , state,dispatch }, credentials) {
          return await axios.post('/api/users/login',credentials)
-             .then(async ({data}) =>{
+             .then( ({data}) =>{
                  if(data.access_token) {
-                     return new Promise((resolve) =>{
-                          commit('SET_TOKEN', data.access_token)
-                          commit('AUTHENTICATED')
-                         window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token
-                         resolve('success');
-                     })
+                     commit('SET_TOKEN', data.access_token)
+                     commit('AUTHENTICATED')
+                    window.localStorage.setItem('currentUser',JSON.stringify(data.user))
+                    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token
                  }
              })
              .then( async ()=> await router.push('/admin'))
              .catch(error => error)
         },
-        async logout({commit, dispatch}) {
+        async logout({commit}) {
 
             return await axios.post('/api/users/logout')
                 .then(response=>{
                     if(response.data.success){
                         commit('DELETE_TOKEN')
                         commit('AUTHENTICATED')
+                        window.localStorage.removeItem('currentUser')
                     }
                 })
                 .then( async ()=> await   router.push({name:'home'}))

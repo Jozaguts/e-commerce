@@ -1,5 +1,6 @@
 <template>
     <v-btn
+        :disabled="disabled"
         @click="destroy(id)">
         <v-icon color="red" v-text="icon">
 
@@ -19,6 +20,10 @@ export default {
             required:false,
             type:String,
             default: 'mdi-trash-can'
+        },
+        disabled:{
+            type: Boolean,
+            required: true,
         }
     },
     data() {

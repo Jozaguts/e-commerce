@@ -15,6 +15,7 @@
             </tr>
             </thead>
             <tbody>
+
             <tr
                 v-for="user in $store.state.users.users"
                 :key="user.id"
@@ -22,7 +23,7 @@
                 <td class="text-center">{{ user.name }}</td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="text-center">
-                    <DeleteBtn :id="user.id" />
+                    <DeleteBtn :disabled="currentUserId !== user.id" :id="user.id" />
                     <v-btn text
                            :to="`/admin/users/update/${user.id}`"
                     >
@@ -42,7 +43,13 @@ import DeleteBtn from "./DeleteBtn";
 export default {
     name: "Table",
     components:{ DeleteBtn },
+    computed:{
+        currentUserId() {
+            return  this.$store.getters['users/getCurrentUser'].id
+        }
+    },
     beforeCreate () {
+
         this.$store.dispatch('users/getUsers')
     }
 }

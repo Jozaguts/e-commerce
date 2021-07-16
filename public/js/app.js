@@ -2978,6 +2978,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "DeleteBtn",
   props: {
@@ -2989,6 +2990,10 @@ __webpack_require__.r(__webpack_exports__);
       required: false,
       type: String,
       "default": 'mdi-trash-can'
+    },
+    disabled: {
+      type: Boolean,
+      required: true
     }
   },
   data: function data() {
@@ -3216,11 +3221,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Table",
   components: {
     DeleteBtn: _DeleteBtn__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  computed: {
+    currentUserId: function currentUserId() {
+      return this.$store.getters['users/getCurrentUser'].id;
+    }
   },
   beforeCreate: function beforeCreate() {
     this.$store.dispatch('users/getUsers');
@@ -3497,124 +3508,102 @@ var auth = {
   },
   actions: {
     login: function login(_ref, credentials) {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-        var commit, state;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var commit, state, dispatch;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                commit = _ref.commit, state = _ref.state;
-                _context3.next = 3;
-                return axios.post('/api/users/login', credentials).then( /*#__PURE__*/function () {
-                  var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(_ref2) {
-                    var data;
-                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-                      while (1) {
-                        switch (_context.prev = _context.next) {
-                          case 0:
-                            data = _ref2.data;
+                commit = _ref.commit, state = _ref.state, dispatch = _ref.dispatch;
+                _context2.next = 3;
+                return axios.post('/api/users/login', credentials).then(function (_ref2) {
+                  var data = _ref2.data;
 
-                            if (!data.access_token) {
-                              _context.next = 3;
-                              break;
-                            }
-
-                            return _context.abrupt("return", new Promise(function (resolve) {
-                              commit('SET_TOKEN', data.access_token);
-                              commit('AUTHENTICATED');
-                              window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token;
-                              resolve('success');
-                            }));
-
-                          case 3:
-                          case "end":
-                            return _context.stop();
-                        }
-                      }
-                    }, _callee);
-                  }));
-
-                  return function (_x) {
-                    return _ref3.apply(this, arguments);
-                  };
-                }()).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+                  if (data.access_token) {
+                    commit('SET_TOKEN', data.access_token);
+                    commit('AUTHENTICATED');
+                    window.localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token;
+                  }
+                }).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
                     while (1) {
-                      switch (_context2.prev = _context2.next) {
+                      switch (_context.prev = _context.next) {
                         case 0:
-                          _context2.next = 2;
+                          _context.next = 2;
                           return _router__WEBPACK_IMPORTED_MODULE_1__.default.push('/admin');
 
                         case 2:
-                          return _context2.abrupt("return", _context2.sent);
+                          return _context.abrupt("return", _context.sent);
 
                         case 3:
                         case "end":
-                          return _context2.stop();
+                          return _context.stop();
                       }
                     }
-                  }, _callee2);
+                  }, _callee);
                 })))["catch"](function (error) {
                   return error;
                 });
 
               case 3:
-                return _context3.abrupt("return", _context3.sent);
+                return _context2.abrupt("return", _context2.sent);
 
               case 4:
               case "end":
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3);
+        }, _callee2);
       }))();
     },
-    logout: function logout(_ref5) {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
-        var commit, dispatch;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+    logout: function logout(_ref4) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var commit;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                commit = _ref5.commit, dispatch = _ref5.dispatch;
-                _context5.next = 3;
+                commit = _ref4.commit;
+                _context4.next = 3;
                 return axios.post('/api/users/logout').then(function (response) {
                   if (response.data.success) {
                     commit('DELETE_TOKEN');
                     commit('AUTHENTICATED');
+                    window.localStorage.removeItem('currentUser');
                   }
-                }).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+                }).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
                     while (1) {
-                      switch (_context4.prev = _context4.next) {
+                      switch (_context3.prev = _context3.next) {
                         case 0:
-                          _context4.next = 2;
+                          _context3.next = 2;
                           return _router__WEBPACK_IMPORTED_MODULE_1__.default.push({
                             name: 'home'
                           });
 
                         case 2:
-                          return _context4.abrupt("return", _context4.sent);
+                          return _context3.abrupt("return", _context3.sent);
 
                         case 3:
                         case "end":
-                          return _context4.stop();
+                          return _context3.stop();
                       }
                     }
-                  }, _callee4);
+                  }, _callee3);
                 })))["catch"](function (error) {
                   return error;
                 });
 
               case 3:
-                return _context5.abrupt("return", _context5.sent);
+                return _context4.abrupt("return", _context4.sent);
 
               case 4:
               case "end":
-                return _context5.stop();
+                return _context4.stop();
             }
           }
-        }, _callee5);
+        }, _callee4);
       }))();
     }
   },
@@ -4188,7 +4177,11 @@ var users = {
       }))();
     }
   },
-  getters: {}
+  getters: {
+    getCurrentUser: function getCurrentUser() {
+      return JSON.parse(window.localStorage.getItem('currentUser'));
+    }
+  }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (users);
 
@@ -25150,6 +25143,7 @@ var render = function() {
   return _c(
     "v-btn",
     {
+      attrs: { disabled: _vm.disabled },
       on: {
         click: function($event) {
           return _vm.destroy(_vm.id)
@@ -25351,7 +25345,12 @@ var render = function() {
                     "td",
                     { staticClass: "text-center" },
                     [
-                      _c("DeleteBtn", { attrs: { id: user.id } }),
+                      _c("DeleteBtn", {
+                        attrs: {
+                          disabled: _vm.currentUserId !== user.id,
+                          id: user.id
+                        }
+                      }),
                       _vm._v(" "),
                       _c(
                         "v-btn",
