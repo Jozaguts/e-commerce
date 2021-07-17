@@ -1,5 +1,5 @@
 <template>
-    <v-form>
+    <v-form class="col-6 offset-3">
         <v-text-field
             autocomplete="name"
             label="Name"

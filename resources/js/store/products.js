@@ -19,12 +19,10 @@ const products = {
     actions: {
         async getProducts( { commit }) {
             try {
-                await axios.get(`/api/products`)
-                    .then(({data}) => {
-                        commit('SET_PRODUCTS', data.data)
-                        delete data.data
-                        commit('SET_PAGINATION', data)
-                    })
+             let { data } = await axios.get(`/api/products`)
+                commit('SET_PRODUCTS', data.data)
+                delete data.data
+                commit('SET_PAGINATION', data)
             } catch (e) {
                 console.error(e.message)
             }
@@ -38,89 +36,21 @@ const products = {
             }catch (e) {
                 console.error(e.message)
             }
+        },
+        async update({commit},product ) {
+            try{
+                let {data} = await axios.put(`/api/products/${product.slug}`, product )
+                commit('global/MESSAGE_HANDLER',data.message,{ root: true })
+            }catch (error){
+                commit('global/MESSAGE_HANDLER',error.response.data,{ root: true })
+                console.error(error.response.data.message)
+            }finally{
+                setTimeout(()=>{
+                    commit('global/CLEAN_NOTIFICATION', null,{ root: true })
+                },2000)
+            }
         }
-        // async productCreate({commit, dispatch, rootState}, userData) {
-        //     commit('global/TOGGLE_LOADING', null, {root: true})
-        //     try {
-        //         await axios.post('/api/products/store', userData, {
-        //             headers: {
-        //                 Authorization: "Bearer " + rootState.auth.access_token,
-        //             }
-        //         })
-        //             .then(response => {
-        //                 commit('SET_PRODUCTS', response.data.data)
-        //                 dispatch('global/setAndClearAlert', {
-        //                     type: 'success',
-        //                     messages: ['Product was created successfully']
-        //                 }, {root: true});
-        //             })
-        //     } catch (error) {
-        //         let alertMessages = [];
-        //         for (const key in error.response.data.errors) {
-        //             if (error.response.data.errors.hasOwnProperty(key)) {
-        //                 alertMessages.push(error.response.data.errors[key][0]);
-        //             }
-        //         }
-        //         dispatch('global/setAndClearAlert', {
-        //             type: 'error',
-        //             messages: alertMessages
-        //         }, {root: true});
-        //     } finally {
-        //         commit('global/TOGGLE_LOADING', null, {root: true})
-        //     }
-        // },
-        // async productEdit({commit, dispatch, rootState}, {data,id}) {
-        //     try {
-        //         await axios.post(`/api/products/update/${id}`, data,{
-        //             headers: {
-        //                 Authorization: "Bearer " + rootState.auth.access_token,
-        //             },
-        //         })
-        //             .then(response => {
-        //                 commit('SET_PRODUCTS', response.data.data)
-        //                 dispatch('global/setAndClearAlert', {
-        //                     type: 'success',
-        //                     messages: ['Product was updated successfully']
-        //                 }, {root: true});
-        //             })
-        //     } catch (error) {
-        //         let alertMessages = [];
-        //         for (const key in error.response.data.errors) {
-        //             if (error.response.data.errors.hasOwnProperty(key)) {
-        //                 alertMessages.push(error.response.data.errors[key][0]);
-        //             }
-        //         }
-        //         dispatch('global/setAndClearAlert', {
-        //             type: 'error',
-        //             messages: alertMessages
-        //         }, {root: true});
-        //     }
-        // },
-        // async productDelete({commit, dispatch, rootState}, userData) {
-        //     try {
-        //         await axios.delete(`/api/products/delete/${userData.id}`, {
-        //             headers: {Authorization: "Bearer " + rootState.auth.access_token}
-        //         })
-        //             .then(response => {
-        //                 commit('SET_PRODUCTS', response.data.data)
-        //                 dispatch('global/setAndClearAlert', {
-        //                     type: 'success',
-        //                     messages: ['Product was deleted successfully']
-        //                 }, {root: true});
-        //             })
-        //     } catch (error) {
-        //         let alertMessages = [];
-        //         for (const key in error.response.data.errors) {
-        //             if (error.response.data.errors.hasOwnProperty(key)) {
-        //                 alertMessages.push(error.response.data.errors[key][0]);
-        //             }
-        //         }
-        //         dispatch('global/setAndClearAlert', {
-        //             type: 'error',
-        //             messages: alertMessages
-        //         }, {root: true});
-        //     }
-        // },
+
     },
     getters: {
         getProducts(state) {

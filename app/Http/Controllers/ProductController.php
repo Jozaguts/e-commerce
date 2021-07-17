@@ -93,7 +93,8 @@ class ProductController extends Controller
 
             $response['media'] = $product->getFirstMedia();
             $response['product'] = $product;
-
+            $response['success'] = true;
+            $response['message'] ='Product was uploaded successfully';
             return response()->json($response);
 
         }catch (Exception $e){
