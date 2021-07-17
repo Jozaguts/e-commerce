@@ -37,9 +37,9 @@
             <v-col cols="12 mt-5">
                 <v-alert
                     dismissible
-                    :value="alert.show"
-                    :type="alert.type">
-                    {{alert.message}}
+                    :value="$store.state.global.showMessage"
+                    :type="$store.state.global.alertType">
+                    {{$store.state.global.message}}
                 </v-alert>
             </v-col>
         </v-row>
@@ -72,24 +72,11 @@ export default {
       }
     },
     methods:{
-        submit() {
+       async submit() {
             try{
                 this.loading = true
                 if(this.isUpdate) {
-                    this.$store.dispatch('users/update', this.user )
-                        .then(response =>  {
-                            if(response.success) {
-                                this.loading = false
-                                this.user = {}
-                                this.alert = response.alert
-                                setTimeout(()=>{
-                                    this.$router.push('/admin/users')
-                                },1000)
-                            }else{
-                                this.loading = false
-                                this.alert = response.alert
-                            }
-                    })
+                  let response = await  this.$store.dispatch('users/update', this.user )
                 }
                 else {
                     this.$store.dispatch('users/create',this.user).then( response => {
@@ -108,6 +95,9 @@ export default {
                 }
             }catch(e){
                 console.error(e.message)
+            }
+            finally {
+                this.loading = false
             }
         }
     },

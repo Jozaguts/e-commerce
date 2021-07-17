@@ -3,6 +3,7 @@ const users = {
     state: {
        users: [],
         user: undefined,
+        currentUser: "" || localStorage.getItem('currentUser'),
     },
     mutations: {
         SET_USERS(state, users) {
@@ -11,6 +12,10 @@ const users = {
         SET_USER(state, user) {
             state.user = user
         },
+        SET_CURRENT_USER(state, user) {
+            window.localStorage.setItem('currentUser',JSON.stringify(user))
+            state.currentUser =  user
+        }
     },
     actions: {
         async getUsers({commit}) {
@@ -26,21 +31,21 @@ const users = {
             })
         },
         async update({commit,dispatch, state},user) {
-            return await axios.put(`/api/users/${state.user.id}`, user)
-                .then(( { data } ) =>{
-                    if(data.success) {
-                        commit('SET_USER',data.user)
-                        dispatch('getUsers')
-                        return {
-                            success: true,
-                            alert: {
-                                show: true,
-                                message: data.message,
-                                type: 'success',
-                            }
-                        }
-                    }
-            })
+            try {
+                let { data } = await axios.put(`/api/users/${state.user.id}`, user)
+                if(data.success) {
+                    commit('SET_USER',data.user)
+                    await  dispatch('getUsers')
+                    commit('global/MESSAGE_HANDLER',data.message,{ root: true })
+                }
+            }catch(error){
+                commit('global/MESSAGE_HANDLER',error.response.data,{ root: true })
+                console.error(error.response.data.message)
+            }finally{
+                setTimeout(()=>{
+                    commit('global/CLEAN_NOTIFICATION', null,{ root: true })
+                },2000)
+            }
         },
         async create({commit,dispatch}, user ) {
             return await axios.post('/api/users', user)
@@ -82,11 +87,6 @@ const users = {
                 })
                 .catch( e => console.log(e.message))
         },
-    },
-    getters: {
-        getCurrentUser(){
-            return JSON.parse( window.localStorage.getItem('currentUser'))
-        }
     },
 }
 export default users

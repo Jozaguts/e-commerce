@@ -37,7 +37,6 @@
         </template>
     </v-simple-table>
 </template>
-<!--TODO EL getCurrentUser NO SE ACTULIZA al iniciar session pasarlo al store -->
 <script>
 import DeleteBtn from "./DeleteBtn";
 export default {
@@ -45,7 +44,7 @@ export default {
     components:{ DeleteBtn },
     computed:{
         currentUserId() {
-            return  this.$store.getters['users/getCurrentUser'].id
+            return  this.$store.state.users.currentUser.id
         }
     },
     beforeCreate () {

@@ -24,28 +24,37 @@ const auth = {
                 if( data.success ) {
                     commit('SET_TOKEN', data['access_token'])
                     commit('AUTHENTICATED')
-                      window.localStorage.setItem('currentUser',JSON.stringify(data.data))
+                    commit('users/SET_CURRENT_USER',data.data,{root:true})
                       window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data['access_token']
                     return true
                 }
             }catch(error) {
-                commit('global/SET_ERROR_FLAG',null, { root: true })
-                commit('global/SET_MESSAGE',error.response.data.message,{ root: true })
+                commit('global/MESSAGE_HANDLER', error.response.data.message,{ root: true })
                 console.error(error.response.data.message)
+            }finally{
+                setTimeout(()=>{
+                    commit('global/CLEAN_NOTIFICATION', null,{ root: true })
+                },2000)
             }
         },
         async logout({commit}) {
-
-            return await axios.post('/api/users/logout')
-                .then(response=>{
-                    if(response.data.success){
-                        commit('DELETE_TOKEN')
-                        commit('AUTHENTICATED')
-                        window.localStorage.removeItem('currentUser')
-                    }
-                })
-                .then( async ()=> await   router.push({name:'home'}))
-                .catch(error => error)
+            try{
+             let response = await axios.post('/api/users/logout')
+                 if(response)
+                     if(response.data.success){
+                         commit('DELETE_TOKEN')
+                         commit('AUTHENTICATED')
+                         window.localStorage.removeItem('currentUser')
+                     }
+                await  router.push({name:'home'})
+            }catch(error){
+                commit('global/MESSAGE_HANDLER',error.response.data,{ root: true })
+                console.error(error.response.data.message)
+            }finally{
+                setTimeout(()=>{
+                    commit('global/CLEAN_NOTIFICATION', null,{ root: true })
+                },2000)
+            }
         }
     },
     getters: {

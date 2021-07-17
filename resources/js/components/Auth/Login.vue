@@ -33,7 +33,7 @@
             <v-row>
                 <v-col cols="6" offset="3">
                     <v-alert
-                        :value="$store.state.global.error"
+                        :value="$store.state.global.showMessage"
                         dismissible
                         type="error"
                         close-text="Close Alert"
