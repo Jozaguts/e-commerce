@@ -30,23 +30,16 @@ export default {
         }
     },
     methods:{
-       async destroy(id) {
-           try{
+        async destroy(id) {
+            try{
                 this.isLoading = true
                 await this.$store.dispatch('users/delete', id)
-           }catch (error) {
+            }catch (error) {
 
-           }finally {
-            this.isLoading = false
-           }
-
-
-
+            }finally {
+                this.isLoading = false
+            }
         }
     }
 }
 </script>
-
-<style scoped>
-
-</style>

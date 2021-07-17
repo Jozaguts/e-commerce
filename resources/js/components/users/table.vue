@@ -47,7 +47,7 @@
 
 </template>
 <script>
-import DeleteBtn from "./DeleteBtn";
+import DeleteBtn from "./btn-delete";
 export default {
     name: "Table",
     components:{ DeleteBtn },

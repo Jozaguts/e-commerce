@@ -48,7 +48,7 @@
 
 <script>
 export default {
-    name: "Form",
+    name: "create-or-update",
     props: {
         isUpdate:{
             required: true,
@@ -56,32 +56,32 @@ export default {
         },
     },
     data() {
-      return {
-          user:{},
-          loading: false,
-          show:false,
-          alert: {
-              message: '',
-              type: 'success',
-              show: false
-          },
-          rules: {
-              required: value => !!value || 'Required.',
-              emailMatch: () => (`The email and password you entered don't match`),
-          },
-      }
+        return {
+            user:{},
+            loading: false,
+            show:false,
+            alert: {
+                message: '',
+                type: 'success',
+                show: false
+            },
+            rules: {
+                required: value => !!value || 'Required.',
+                emailMatch: () => (`The email and password you entered don't match`),
+            },
+        }
     },
     methods:{
-       async submit() {
+        async submit() {
             try{
                 this.loading = true
-                  let { success } = await  this.$store.dispatch(`users/${this.isUpdate ?'update':'create' }`, this.user )
+                let { success } = await  this.$store.dispatch(`users/${this.isUpdate ?'update':'create' }`, this.user )
                 console.log(success)
-                    if(success){
-                        setTimeout(()=>{
-                             this.$router.replace('/admin/users')
-                        },1500)
-                    }
+                if(success){
+                    setTimeout(()=>{
+                        this.$router.replace('/admin/users')
+                    },1500)
+                }
             }catch(e){
                 console.error(e.message)
             }
@@ -93,9 +93,9 @@ export default {
     mounted(){
         if(this.isUpdate){
             this.$store.dispatch('users/getUser', this.$route.params.id)
-            .then(()=>{
-                this.user = this.$store.state.users.user
-            })
+                .then(()=>{
+                    this.user = this.$store.state.users.user
+                })
         }else{
             this.user = { name:'',email:''}
         }
@@ -105,7 +105,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -48,10 +48,8 @@
 </template>
 
 <script>
-import UserFrom from './users/Form'
 export default {
     name: "Admin",
-    components:{ UserFrom },
     data() {
         return {
             selectedItem: 1,

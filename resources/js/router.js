@@ -11,8 +11,8 @@ import Admin from './pages/admin/index.vue'
 // import Error404 from './views/Errors/404.vue'
 // import ProductDetails from './components/Products/Details'
 import Login from './components/Auth/Login.vue'
-import UsersTable from './pages/admin/users/Table.vue';
-import UserForm from './pages/admin/users/Form.vue'
+import UsersHome from './pages/admin/users/index.vue';
+import UserCreateOrUpdate from './pages/admin/users/create-or-update.vue'
 
 Vue.use(VueRouter)
 
@@ -49,16 +49,16 @@ const router = new VueRouter({
             children: [
                 {
                     path: 'users',
-                    component: UsersTable,
+                    component: UsersHome,
                 },
                 {
                     path: 'users/create',
-                    component: UserForm,
+                    component: UserCreateOrUpdate,
                     props: { isUpdate: false},
                 },
                 {
                     path: 'users/update/:id',
-                    component: UserForm,
+                    component: UserCreateOrUpdate,
                     props: { isUpdate: true},
                 },
 
