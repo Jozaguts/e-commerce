@@ -31,8 +31,25 @@
                     <v-switch
                         v-model="product.status"
                         color="green"
-                        @change="update(product)"
-                ></v-switch></td>
+                        @change="update(product)">
+                    </v-switch>
+                </td>
+                <td class="text-center">
+                    <v-btn text
+                           @click="$store.dispatch('products/delete', product.slug )"
+                    >
+                        <v-icon color="red">
+                            mdi-trash-can
+                        </v-icon>
+                    </v-btn>
+                    <v-btn text
+                           :to="`/admin/products/update/${product.slug}`"
+                    >
+                        <v-icon color="yellow">
+                            mdi-pencil-box
+                        </v-icon>
+                    </v-btn>
+                </td>
             </tr>
             </tbody>
             <tr>

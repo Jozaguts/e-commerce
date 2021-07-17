@@ -2452,6 +2452,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Table",
   computed: {
@@ -4226,6 +4243,54 @@ var products = {
             }
           }
         }, _callee3, null, [[1, 9, 13, 16]]);
+      }))();
+    },
+    "delete": function _delete(_ref6, slug) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var commit, dispatch, _yield$axios$delete, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                commit = _ref6.commit, dispatch = _ref6.dispatch;
+                _context4.prev = 1;
+                _context4.next = 4;
+                return axios["delete"]("/api/products/".concat(slug));
+
+              case 4:
+                _yield$axios$delete = _context4.sent;
+                data = _yield$axios$delete.data;
+                commit('global/MESSAGE_HANDLER', data.message, {
+                  root: true
+                });
+                dispatch('getProducts');
+                _context4.next = 14;
+                break;
+
+              case 10:
+                _context4.prev = 10;
+                _context4.t0 = _context4["catch"](1);
+                commit('global/MESSAGE_HANDLER', _context4.t0.response.data, {
+                  root: true
+                });
+                console.error(_context4.t0.response.data.message);
+
+              case 14:
+                _context4.prev = 14;
+                setTimeout(function () {
+                  commit('global/CLEAN_NOTIFICATION', null, {
+                    root: true
+                  });
+                }, 2000);
+                return _context4.finish(14);
+
+              case 17:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[1, 10, 14, 17]]);
       }))();
     }
   },
@@ -24953,6 +25018,54 @@ var render = function() {
                           expression: "product.status"
                         }
                       })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    { staticClass: "text-center" },
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { text: "" },
+                          on: {
+                            click: function($event) {
+                              return _vm.$store.dispatch(
+                                "products/delete",
+                                product.slug
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("v-icon", { attrs: { color: "red" } }, [
+                            _vm._v(
+                              "\n                        mdi-trash-can\n                    "
+                            )
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: {
+                            text: "",
+                            to: "/admin/products/update/" + product.slug
+                          }
+                        },
+                        [
+                          _c("v-icon", { attrs: { color: "yellow" } }, [
+                            _vm._v(
+                              "\n                        mdi-pencil-box\n                    "
+                            )
+                          ])
+                        ],
+                        1
+                      )
                     ],
                     1
                   )

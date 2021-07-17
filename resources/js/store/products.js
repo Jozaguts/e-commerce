@@ -49,6 +49,20 @@ const products = {
                     commit('global/CLEAN_NOTIFICATION', null,{ root: true })
                 },2000)
             }
+        },
+        async delete({commit,dispatch},slug){
+            try{
+                let { data } = await axios.delete(`/api/products/${slug}`)
+                commit('global/MESSAGE_HANDLER',data.message,{ root: true })
+                dispatch('getProducts')
+            }catch (error){
+                commit('global/MESSAGE_HANDLER',error.response.data,{ root: true })
+                console.error(error.response.data.message)
+            }finally{
+                setTimeout(()=>{
+                    commit('global/CLEAN_NOTIFICATION', null,{ root: true })
+                },2000)
+            }
         }
 
     },
