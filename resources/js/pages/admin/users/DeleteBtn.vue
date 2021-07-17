@@ -2,9 +2,7 @@
     <v-btn
         :disabled="disabled"
         @click="destroy(id)">
-        <v-icon color="red" v-text="icon">
-
-        </v-icon>
+        <v-icon color="red" v-text="icon"></v-icon>
     </v-btn>
 </template>
 
@@ -32,14 +30,18 @@ export default {
         }
     },
     methods:{
-        destroy(id) {
-            this.isLoading = true
-            this.$store.dispatch('users/delete', id)
-                .then(res =>{
-                    if( res.success ){
-                        this.isLoading = false
-                    }
-                })
+       async destroy(id) {
+           try{
+                this.isLoading = true
+                await this.$store.dispatch('users/delete', id)
+           }catch (error) {
+
+           }finally {
+            this.isLoading = false
+           }
+
+
+
         }
     }
 }

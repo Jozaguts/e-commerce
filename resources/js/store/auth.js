@@ -30,7 +30,7 @@ const auth = {
                     commit('AUTHENTICATED')
                     commit('SET_CURRENT_USER',data.data)
                     window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data['access_token']
-                    return true
+                    await router.push({name: 'admin'})
                 }
             }catch(error) {
                 commit('global/MESSAGE_HANDLER', error.response.data.message,{ root: true })

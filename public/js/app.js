@@ -1938,14 +1938,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 //
 //
 //
@@ -2024,38 +2016,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     login: function login() {
-      var _this = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var success;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return _this.$store.dispatch('auth/login', _this.credentials);
-
-              case 3:
-                success = _context.sent;
-                if (success) _this.$router.push({
-                  name: 'admin'
-                });
-                _context.next = 10;
-                break;
-
-              case 7:
-                _context.prev = 7;
-                _context.t0 = _context["catch"](0);
-                console.error(_context.t0);
-
-              case 10:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, null, [[0, 7]]);
-      }))();
+      try {
+        this.$store.dispatch('auth/login', this.credentials);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 });
@@ -2992,8 +2957,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -3028,12 +2999,36 @@ __webpack_require__.r(__webpack_exports__);
     destroy: function destroy(id) {
       var _this = this;
 
-      this.isLoading = true;
-      this.$store.dispatch('users/delete', id).then(function (res) {
-        if (res.success) {
-          _this.isLoading = false;
-        }
-      });
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _this.isLoading = true;
+                _context.next = 4;
+                return _this.$store.dispatch('users/delete', id);
+
+              case 4:
+                _context.next = 8;
+                break;
+
+              case 6:
+                _context.prev = 6;
+                _context.t0 = _context["catch"](0);
+
+              case 8:
+                _context.prev = 8;
+                _this.isLoading = false;
+                return _context.finish(8);
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 6, 8, 11]]);
+      }))();
     }
   }
 });
@@ -3140,62 +3135,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var response;
+        var _yield$_this$$store$d, success;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
                 _this.loading = true;
+                _context.next = 4;
+                return _this.$store.dispatch("users/".concat(_this.isUpdate ? 'update' : 'create'), _this.user);
 
-                if (!_this.isUpdate) {
-                  _context.next = 8;
-                  break;
+              case 4:
+                _yield$_this$$store$d = _context.sent;
+                success = _yield$_this$$store$d.success;
+                console.log(success);
+
+                if (success) {
+                  setTimeout(function () {
+                    _this.$router.replace('/admin/users');
+                  }, 1500);
                 }
 
-                _context.next = 5;
-                return _this.$store.dispatch('users/update', _this.user);
-
-              case 5:
-                response = _context.sent;
-                _context.next = 9;
+                _context.next = 13;
                 break;
 
-              case 8:
-                _this.$store.dispatch('users/create', _this.user).then(function (response) {
-                  if (response.success) {
-                    _this.loading = false;
-                    _this.user = {};
-                    _this.alert = response.alert;
-                    setTimeout(function () {
-                      _this.$router.push('/admin/users');
-                    }, 1000);
-                  } else {
-                    _this.loading = false;
-                    _this.alert = response.alert;
-                  }
-                });
-
-              case 9:
-                _context.next = 14;
-                break;
-
-              case 11:
-                _context.prev = 11;
+              case 10:
+                _context.prev = 10;
                 _context.t0 = _context["catch"](0);
                 console.error(_context.t0.message);
 
-              case 14:
-                _context.prev = 14;
+              case 13:
+                _context.prev = 13;
                 _this.loading = false;
-                return _context.finish(14);
+                return _context.finish(13);
 
-              case 17:
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 11, 14, 17]]);
+        }, _callee, null, [[0, 10, 13, 16]]);
       }))();
     }
   },
@@ -3236,6 +3216,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _DeleteBtn__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DeleteBtn */ "./resources/js/pages/admin/users/DeleteBtn.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3582,7 +3571,7 @@ var auth = {
                 data = _yield$axios$post.data;
 
                 if (!data.success) {
-                  _context.next = 12;
+                  _context.next = 13;
                   break;
                 }
 
@@ -3590,35 +3579,38 @@ var auth = {
                 commit('AUTHENTICATED');
                 commit('SET_CURRENT_USER', data.data);
                 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data['access_token'];
-                return _context.abrupt("return", true);
+                _context.next = 13;
+                return _router__WEBPACK_IMPORTED_MODULE_1__.default.push({
+                  name: 'admin'
+                });
 
-              case 12:
-                _context.next = 18;
+              case 13:
+                _context.next = 19;
                 break;
 
-              case 14:
-                _context.prev = 14;
+              case 15:
+                _context.prev = 15;
                 _context.t0 = _context["catch"](1);
                 commit('global/MESSAGE_HANDLER', _context.t0.response.data.message, {
                   root: true
                 });
                 console.error(_context.t0.response.data.message);
 
-              case 18:
-                _context.prev = 18;
+              case 19:
+                _context.prev = 19;
                 setTimeout(function () {
                   commit('global/CLEAN_NOTIFICATION', null, {
                     root: true
                   });
                 }, 2000);
-                return _context.finish(18);
+                return _context.finish(19);
 
-              case 21:
+              case 22:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 14, 18, 21]]);
+        }, _callee, null, [[1, 15, 19, 22]]);
       }))();
     },
     logout: function logout(_ref2) {
@@ -4147,8 +4139,8 @@ var users = {
     user: undefined
   },
   mutations: {
-    SET_USERS: function SET_USERS(state, users) {
-      state.users = users;
+    SET_USERS: function SET_USERS(state, data) {
+      state.users = data;
     },
     SET_USER: function SET_USER(state, user) {
       state.user = user;
@@ -4157,42 +4149,67 @@ var users = {
   actions: {
     getUsers: function getUsers(_ref) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var commit;
+        var commit, _yield$axios$get, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref.commit;
-                _context.next = 3;
-                return axios.get('/api/users').then(function (_ref2) {
-                  var data = _ref2.data;
-                  var users = data.users;
-                  commit('SET_USERS', users);
-                });
+                _context.prev = 1;
+                _context.next = 4;
+                return axios.get('/api/users');
 
-              case 3:
+              case 4:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data.data;
+                commit('SET_USERS', data);
+                _context.next = 13;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](1);
+                commit('global/MESSAGE_HANDLER', _context.t0.response.data, {
+                  root: true
+                });
+                console.error(_context.t0.response.data.message);
+
+              case 13:
+                _context.prev = 13;
+                setTimeout(function () {
+                  commit('global/CLEAN_NOTIFICATION', null, {
+                    root: true
+                  });
+                }, 2000);
+                return _context.finish(13);
+
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, null, [[1, 9, 13, 16]]);
       }))();
     },
-    getUser: function getUser(_ref3, id) {
+    getUser: function getUser(_ref2, id) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var commit, rootState;
+        var commit, rootState, _yield$axios$get2, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                commit = _ref3.commit, rootState = _ref3.rootState;
+                commit = _ref2.commit, rootState = _ref2.rootState;
                 _context2.next = 3;
-                return axios.get("/api/users/".concat(id)).then(function (_ref4) {
-                  var data = _ref4.data;
-                  commit('SET_USER', data);
-                });
+                return axios.get("/api/users/".concat(id));
 
               case 3:
+                _yield$axios$get2 = _context2.sent;
+                data = _yield$axios$get2.data.data;
+                commit('SET_USER', data);
+
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -4200,7 +4217,7 @@ var users = {
         }, _callee2);
       }))();
     },
-    update: function update(_ref5, user) {
+    update: function update(_ref3, user) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var commit, dispatch, state, _yield$axios$put, data;
 
@@ -4208,7 +4225,7 @@ var users = {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                commit = _ref5.commit, dispatch = _ref5.dispatch, state = _ref5.state;
+                commit = _ref3.commit, dispatch = _ref3.dispatch, state = _ref3.state;
                 _context3.prev = 1;
                 _context3.next = 4;
                 return axios.put("/api/users/".concat(state.user.id), user);
@@ -4218,11 +4235,11 @@ var users = {
                 data = _yield$axios$put.data;
 
                 if (!data.success) {
-                  _context3.next = 11;
+                  _context3.next = 12;
                   break;
                 }
 
-                commit('SET_USER', data.user);
+                commit('SET_USER', data.data);
                 _context3.next = 10;
                 return dispatch('getUsers');
 
@@ -4230,116 +4247,150 @@ var users = {
                 commit('global/MESSAGE_HANDLER', data.message, {
                   root: true
                 });
+                return _context3.abrupt("return", {
+                  success: true
+                });
 
-              case 11:
-                _context3.next = 17;
+              case 12:
+                _context3.next = 18;
                 break;
 
-              case 13:
-                _context3.prev = 13;
+              case 14:
+                _context3.prev = 14;
                 _context3.t0 = _context3["catch"](1);
                 commit('global/MESSAGE_HANDLER', _context3.t0.response.data, {
                   root: true
                 });
                 console.error(_context3.t0.response.data.message);
 
-              case 17:
-                _context3.prev = 17;
+              case 18:
+                _context3.prev = 18;
                 setTimeout(function () {
                   commit('global/CLEAN_NOTIFICATION', null, {
                     root: true
                   });
                 }, 2000);
-                return _context3.finish(17);
+                return _context3.finish(18);
 
-              case 20:
+              case 21:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[1, 13, 17, 20]]);
+        }, _callee3, null, [[1, 14, 18, 21]]);
       }))();
     },
-    create: function create(_ref6, user) {
+    create: function create(_ref4, user) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        var commit, dispatch;
+        var commit, dispatch, _yield$axios$post, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                commit = _ref6.commit, dispatch = _ref6.dispatch;
-                _context4.next = 3;
-                return axios.post('/api/users', user).then(function (_ref7) {
-                  var data = _ref7.data;
-
-                  if (data.success) {
-                    return {
-                      success: true,
-                      alert: {
-                        show: true,
-                        message: data.message,
-                        type: 'success'
-                      }
-                    };
-                  }
-                })["catch"](function (error) {
-                  var errorMessages = [];
-
-                  for (var key in error.response.data.errors) {
-                    console.log(error.response.data.errors[key]);
-                    errorMessages.push(JSON.stringify(error.response.data.errors[key][0]));
-                  }
-
-                  return {
-                    success: false,
-                    alert: {
-                      show: true,
-                      message: errorMessages[0],
-                      type: 'error'
-                    }
-                  };
-                });
-
-              case 3:
-                return _context4.abrupt("return", _context4.sent);
+                commit = _ref4.commit, dispatch = _ref4.dispatch;
+                _context4.prev = 1;
+                _context4.next = 4;
+                return axios.post('/api/users', user);
 
               case 4:
+                _yield$axios$post = _context4.sent;
+                data = _yield$axios$post.data;
+
+                if (!data.success) {
+                  _context4.next = 11;
+                  break;
+                }
+
+                _context4.next = 9;
+                return dispatch('getUsers');
+
+              case 9:
+                commit('global/MESSAGE_HANDLER', data.message, {
+                  root: true
+                });
+                return _context4.abrupt("return", {
+                  success: true
+                });
+
+              case 11:
+                _context4.next = 17;
+                break;
+
+              case 13:
+                _context4.prev = 13;
+                _context4.t0 = _context4["catch"](1);
+                commit('global/MESSAGE_HANDLER', _context4.t0.response.data, {
+                  root: true
+                });
+                console.error(_context4.t0.response.data.message);
+
+              case 17:
+                _context4.prev = 17;
+                setTimeout(function () {
+                  commit('global/CLEAN_NOTIFICATION', null, {
+                    root: true
+                  });
+                }, 2000);
+                return _context4.finish(17);
+
+              case 20:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4);
+        }, _callee4, null, [[1, 13, 17, 20]]);
       }))();
     },
-    "delete": function _delete(_ref8, id) {
+    "delete": function _delete(_ref5, id) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
-        var dispatch;
+        var dispatch, commit, _yield$axios$delete, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                dispatch = _ref8.dispatch;
-                _context5.next = 3;
-                return axios["delete"]("/api/users/".concat(id)).then(function (_ref9) {
-                  var data = _ref9.data;
-
-                  if (data.success) {
-                    dispatch('getUsers');
-                    return data;
-                  }
-                })["catch"](function (e) {
-                  return console.log(e.message);
-                });
-
-              case 3:
-                return _context5.abrupt("return", _context5.sent);
+                dispatch = _ref5.dispatch, commit = _ref5.commit;
+                _context5.prev = 1;
+                _context5.next = 4;
+                return axios["delete"]("/api/users/".concat(id));
 
               case 4:
+                _yield$axios$delete = _context5.sent;
+                data = _yield$axios$delete.data;
+                commit('global/MESSAGE_HANDLER', data.message, {
+                  root: true
+                });
+                _context5.next = 9;
+                return dispatch('getUsers');
+
+              case 9:
+                _context5.next = 15;
+                break;
+
+              case 11:
+                _context5.prev = 11;
+                _context5.t0 = _context5["catch"](1);
+                commit('global/MESSAGE_HANDLER', _context5.t0.response.data, {
+                  root: true
+                });
+                console.error(_context5.t0.response.data.message);
+
+              case 15:
+                _context5.prev = 15;
+                setTimeout(function () {
+                  commit('global/CLEAN_NOTIFICATION', null, {
+                    root: true
+                  });
+                }, 2000);
+                return _context5.finish(15);
+
+              case 18:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5);
+        }, _callee5, null, [[1, 11, 15, 18]]);
       }))();
     }
   },
@@ -25537,6 +25588,32 @@ var render = function() {
                 ])
               }),
               0
+            ),
+            _vm._v(" "),
+            _c(
+              "tr",
+              [
+                _c(
+                  "v-snackbar",
+                  {
+                    model: {
+                      value: _vm.$store.state.global.showMessage,
+                      callback: function($$v) {
+                        _vm.$set(_vm.$store.state.global, "showMessage", $$v)
+                      },
+                      expression: "$store.state.global.showMessage"
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.$store.state.global.message) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ],
+              1
             )
           ]
         },

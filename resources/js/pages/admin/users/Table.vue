@@ -34,8 +34,17 @@
                 </td>
             </tr>
             </tbody>
+            <tr>
+                <v-snackbar
+                    v-model="$store.state.global.showMessage"
+                >
+                    {{$store.state.global.message}}
+                </v-snackbar>
+            </tr>
         </template>
+
     </v-simple-table>
+
 </template>
 <script>
 import DeleteBtn from "./DeleteBtn";

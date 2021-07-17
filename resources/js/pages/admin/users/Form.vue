@@ -75,24 +75,13 @@ export default {
        async submit() {
             try{
                 this.loading = true
-                if(this.isUpdate) {
-                  let response = await  this.$store.dispatch('users/update', this.user )
-                }
-                else {
-                    this.$store.dispatch('users/create',this.user).then( response => {
-                      if(response.success) {
-                          this.loading = false
-                          this.user = {}
-                          this.alert = response.alert
-                          setTimeout(()=>{
-                              this.$router.push('/admin/users')
-                          },1000)
-                      }else{
-                          this.loading = false
-                          this.alert = response.alert
-                      }
-                    })
-                }
+                  let { success } = await  this.$store.dispatch(`users/${this.isUpdate ?'update':'create' }`, this.user )
+                console.log(success)
+                    if(success){
+                        setTimeout(()=>{
+                             this.$router.replace('/admin/users')
+                        },1500)
+                    }
             }catch(e){
                 console.error(e.message)
             }

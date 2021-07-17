@@ -69,10 +69,9 @@ export default {
         }
     },
     methods:{
-       async login() {
+        login() {
            try{
-                let success  = await this.$store.dispatch('auth/login', this.credentials)
-                    if (success) this.$router.push({name: 'admin'})
+                this.$store.dispatch('auth/login', this.credentials)
            }catch(error) {
                console.error(error)
            }
