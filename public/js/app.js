@@ -1938,6 +1938,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2011,28 +2019,43 @@ __webpack_require__.r(__webpack_exports__);
         emailMatch: function emailMatch() {
           return "The email and password you entered don't match";
         }
-      },
-      error: false,
-      message: ''
+      }
     };
   },
   methods: {
     login: function login() {
       var _this = this;
 
-      this.$store.dispatch('auth/login', this.credentials).then(function (res) {
-        if (res.response.status >= 400) {
-          _this.error = !_this.error;
-          _this.message = res.response.data.message;
-        }
-      })["catch"](function (error) {
-        console.error(error);
-      })["finally"](function () {
-        setTimeout(function () {
-          _this.error = !_this.error;
-          _this.message = '';
-        }, 3000);
-      });
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var success;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return _this.$store.dispatch('auth/login', _this.credentials);
+
+              case 3:
+                success = _context.sent;
+                if (success) _this.$router.push({
+                  name: 'admin'
+                });
+                _context.next = 10;
+                break;
+
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
+                console.error(_context.t0);
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 7]]);
+      }))();
     }
   }
 });
@@ -3508,102 +3531,103 @@ var auth = {
   },
   actions: {
     login: function login(_ref, credentials) {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var commit, state, dispatch;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var commit, state, dispatch, _yield$axios$post, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref.commit, state = _ref.state, dispatch = _ref.dispatch;
-                _context2.next = 3;
-                return axios.post('/api/users/login', credentials).then(function (_ref2) {
-                  var data = _ref2.data;
-
-                  if (data.access_token) {
-                    commit('SET_TOKEN', data.access_token);
-                    commit('AUTHENTICATED');
-                    window.localStorage.setItem('currentUser', JSON.stringify(data.user));
-                    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token;
-                  }
-                }).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-                    while (1) {
-                      switch (_context.prev = _context.next) {
-                        case 0:
-                          _context.next = 2;
-                          return _router__WEBPACK_IMPORTED_MODULE_1__.default.push('/admin');
-
-                        case 2:
-                          return _context.abrupt("return", _context.sent);
-
-                        case 3:
-                        case "end":
-                          return _context.stop();
-                      }
-                    }
-                  }, _callee);
-                })))["catch"](function (error) {
-                  return error;
-                });
-
-              case 3:
-                return _context2.abrupt("return", _context2.sent);
+                _context.prev = 1;
+                _context.next = 4;
+                return axios.post('/api/users/login', credentials);
 
               case 4:
+                _yield$axios$post = _context.sent;
+                data = _yield$axios$post.data;
+
+                if (!data.success) {
+                  _context.next = 12;
+                  break;
+                }
+
+                commit('SET_TOKEN', data['access_token']);
+                commit('AUTHENTICATED');
+                window.localStorage.setItem('currentUser', JSON.stringify(data.data));
+                window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data['access_token'];
+                return _context.abrupt("return", true);
+
+              case 12:
+                _context.next = 19;
+                break;
+
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](1);
+                commit('global/SET_ERROR_FLAG', null, {
+                  root: true
+                });
+                commit('global/SET_MESSAGE', _context.t0.response.data.message, {
+                  root: true
+                });
+                console.error(_context.t0.response.data.message);
+
+              case 19:
               case "end":
-                return _context2.stop();
+                return _context.stop();
             }
           }
-        }, _callee2);
+        }, _callee, null, [[1, 14]]);
       }))();
     },
-    logout: function logout(_ref4) {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+    logout: function logout(_ref2) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var commit;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                commit = _ref4.commit;
-                _context4.next = 3;
+                commit = _ref2.commit;
+                _context3.next = 3;
                 return axios.post('/api/users/logout').then(function (response) {
                   if (response.data.success) {
                     commit('DELETE_TOKEN');
                     commit('AUTHENTICATED');
                     window.localStorage.removeItem('currentUser');
                   }
-                }).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+                }).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
                     while (1) {
-                      switch (_context3.prev = _context3.next) {
+                      switch (_context2.prev = _context2.next) {
                         case 0:
-                          _context3.next = 2;
+                          _context2.next = 2;
                           return _router__WEBPACK_IMPORTED_MODULE_1__.default.push({
                             name: 'home'
                           });
 
                         case 2:
-                          return _context3.abrupt("return", _context3.sent);
+                          return _context2.abrupt("return", _context2.sent);
 
                         case 3:
                         case "end":
-                          return _context3.stop();
+                          return _context2.stop();
                       }
                     }
-                  }, _callee3);
+                  }, _callee2);
                 })))["catch"](function (error) {
                   return error;
                 });
 
               case 3:
-                return _context4.abrupt("return", _context4.sent);
+                return _context3.abrupt("return", _context3.sent);
 
               case 4:
               case "end":
-                return _context4.stop();
+                return _context3.stop();
             }
           }
-        }, _callee4);
+        }, _callee3);
       }))();
     }
   },
@@ -3729,6 +3753,38 @@ var cart = {
 
 /***/ }),
 
+/***/ "./resources/js/store/global.js":
+/*!**************************************!*\
+  !*** ./resources/js/store/global.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var global = {
+  namespaced: true,
+  state: {
+    error: false,
+    message: ''
+  },
+  mutations: {
+    SET_MESSAGE: function SET_MESSAGE(state, message) {
+      state.message = message;
+    },
+    SET_ERROR_FLAG: function SET_ERROR_FLAG(state) {
+      state.error = !state.error;
+    }
+  },
+  actions: {},
+  getters: {}
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (global);
+
+/***/ }),
+
 /***/ "./resources/js/store/index.js":
 /*!*************************************!*\
   !*** ./resources/js/store/index.js ***!
@@ -3740,13 +3796,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex-persistedstate */ "./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js");
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth */ "./resources/js/store/auth.js");
 /* harmony import */ var _products__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./products */ "./resources/js/store/products.js");
 /* harmony import */ var _cart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./cart */ "./resources/js/store/cart.js");
 /* harmony import */ var _users__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./users */ "./resources/js/store/users.js");
+/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./global */ "./resources/js/store/global.js");
 
 
 
@@ -3754,17 +3811,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_5__.default.use(vuex__WEBPACK_IMPORTED_MODULE_6__.default);
+
+vue__WEBPACK_IMPORTED_MODULE_6__.default.use(vuex__WEBPACK_IMPORTED_MODULE_7__.default);
 var cartState = (0,vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__.default)();
 var authState = (0,vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__.default)({
   paths: ['auth', 'cart']
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_6__.default.Store({
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_7__.default.Store({
   modules: {
     auth: _auth__WEBPACK_IMPORTED_MODULE_1__.default,
     products: _products__WEBPACK_IMPORTED_MODULE_2__.default,
     cart: _cart__WEBPACK_IMPORTED_MODULE_3__.default,
-    users: _users__WEBPACK_IMPORTED_MODULE_4__.default
+    users: _users__WEBPACK_IMPORTED_MODULE_4__.default,
+    global: _global__WEBPACK_IMPORTED_MODULE_5__.default
   },
   plugins: [cartState, authState]
 }));
@@ -4103,12 +4162,12 @@ var users = {
     },
     create: function create(_ref7, user) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        var commit;
+        var commit, dispatch;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                commit = _ref7.commit;
+                commit = _ref7.commit, dispatch = _ref7.dispatch;
                 _context4.next = 3;
                 return axios.post('/api/users', user).then(function (_ref8) {
                   var data = _ref8.data;
@@ -4124,11 +4183,18 @@ var users = {
                     };
                   }
                 })["catch"](function (error) {
+                  var errorMessages = [];
+
+                  for (var key in error.response.data.errors) {
+                    console.log(error.response.data.errors[key]);
+                    errorMessages.push(JSON.stringify(error.response.data.errors[key][0]));
+                  }
+
                   return {
                     success: false,
                     alert: {
                       show: true,
-                      message: error.response.data.message,
+                      message: errorMessages[0],
                       type: 'error'
                     }
                   };
@@ -23892,7 +23958,7 @@ var render = function() {
                     "v-alert",
                     {
                       attrs: {
-                        value: _vm.error,
+                        value: _vm.$store.state.global.error,
                         dismissible: "",
                         type: "error",
                         "close-text": "Close Alert",
@@ -23902,7 +23968,7 @@ var render = function() {
                     [
                       _vm._v(
                         "\n                    " +
-                          _vm._s(_vm.message) +
+                          _vm._s(_vm.$store.state.global.message) +
                           "\n                "
                       )
                     ]
@@ -25347,7 +25413,7 @@ var render = function() {
                     [
                       _c("DeleteBtn", {
                         attrs: {
-                          disabled: _vm.currentUserId !== user.id,
+                          disabled: _vm.currentUserId == user.id,
                           id: user.id
                         }
                       }),

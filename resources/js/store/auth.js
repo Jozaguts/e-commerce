@@ -18,18 +18,21 @@ const auth = {
         }
     },
     actions: {
-        async login({ commit , state,dispatch }, credentials) {
-         return await axios.post('/api/users/login',credentials)
-             .then( ({data}) =>{
-                 if(data.access_token) {
-                     commit('SET_TOKEN', data.access_token)
-                     commit('AUTHENTICATED')
-                    window.localStorage.setItem('currentUser',JSON.stringify(data.user))
-                    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token
-                 }
-             })
-             .then( async ()=> await router.push('/admin'))
-             .catch(error => error)
+        async login({ commit , state, dispatch }, credentials) {
+            try{
+                let { data } =  await axios.post('/api/users/login',credentials)
+                if( data.success ) {
+                    commit('SET_TOKEN', data['access_token'])
+                    commit('AUTHENTICATED')
+                      window.localStorage.setItem('currentUser',JSON.stringify(data.data))
+                      window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data['access_token']
+                    return true
+                }
+            }catch(error) {
+                commit('global/SET_ERROR_FLAG',null, { root: true })
+                commit('global/SET_MESSAGE',error.response.data.message,{ root: true })
+                console.error(error.response.data.message)
+            }
         },
         async logout({commit}) {
 

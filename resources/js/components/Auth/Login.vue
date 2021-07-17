@@ -33,13 +33,13 @@
             <v-row>
                 <v-col cols="6" offset="3">
                     <v-alert
-                        :value="error"
+                        :value="$store.state.global.error"
                         dismissible
                         type="error"
                         close-text="Close Alert"
                         color="deep-danger accent-4"
                     >
-                        {{message}}
+                        {{$store.state.global.message}}
                     </v-alert>
                 </v-col>
             </v-row>
@@ -66,27 +66,17 @@ export default {
                 min: v => v.length >= 8 || 'Min 8 characters',
                 emailMatch: () => (`The email and password you entered don't match`),
             },
-            error: false,
-            message:''
         }
     },
     methods:{
-        login() {
-            this.$store.dispatch('auth/login', this.credentials)
-                .then(res => {
-                   if (res.response.status >= 400 ) {
-                        this.error = !this.error
-                        this.message =  res.response.data.message
-                   }
-                }).catch(error =>{
-                    console.error(error)
-                }).finally(() =>{
-                    setTimeout(()=>{
-                        this.error = !this.error
-                        this.message = ''
-                    },3000)
-                })
-            }
+       async login() {
+           try{
+                let success  = await this.$store.dispatch('auth/login', this.credentials)
+                    if (success) this.$router.push({name: 'admin'})
+           }catch(error) {
+               console.error(error)
+           }
         }
+    }
     }
 </script>

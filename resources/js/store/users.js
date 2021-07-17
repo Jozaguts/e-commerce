@@ -42,7 +42,7 @@ const users = {
                     }
             })
         },
-        async create({commit}, user ) {
+        async create({commit,dispatch}, user ) {
             return await axios.post('/api/users', user)
                 .then( ( { data } ) => {
                     if(data.success) {
@@ -57,11 +57,16 @@ const users = {
                     }
                 })
                 .catch( error => {
+                    let errorMessages = [];
+                    for(let key in error.response.data.errors) {
+                        console.log(error.response.data.errors[key])
+                        errorMessages.push(JSON.stringify(error.response.data.errors[key][0]))
+                    }
                     return {
                         success: false,
                         alert: {
                             show: true,
-                            message:error.response.data.message,
+                            message: errorMessages[0],
                             type: 'error',
                         }
                     }
@@ -76,12 +81,12 @@ const users = {
                     }
                 })
                 .catch( e => console.log(e.message))
-        }
+        },
     },
     getters: {
         getCurrentUser(){
             return JSON.parse( window.localStorage.getItem('currentUser'))
         }
-    }
+    },
 }
 export default users

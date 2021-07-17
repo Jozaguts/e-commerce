@@ -23,7 +23,7 @@
                 <td class="text-center">{{ user.name }}</td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="text-center">
-                    <DeleteBtn :disabled="currentUserId !== user.id" :id="user.id" />
+                    <DeleteBtn :disabled="currentUserId == user.id" :id="user.id" />
                     <v-btn text
                            :to="`/admin/users/update/${user.id}`"
                     >
@@ -37,7 +37,7 @@
         </template>
     </v-simple-table>
 </template>
-
+<!--TODO EL getCurrentUser NO SE ACTULIZA al iniciar session pasarlo al store -->
 <script>
 import DeleteBtn from "./DeleteBtn";
 export default {
@@ -49,7 +49,6 @@ export default {
         }
     },
     beforeCreate () {
-
         this.$store.dispatch('users/getUsers')
     }
 }

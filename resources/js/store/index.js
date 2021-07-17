@@ -5,6 +5,7 @@ import auth from './auth'
 import products from './products'
 import cart from './cart'
 import users from './users'
+import global from './global'
 Vue.use(Vuex)
 const cartState = createPersistedState()
 const authState = createPersistedState({
@@ -15,7 +16,8 @@ export default new Vuex.Store({
         auth,
         products,
         cart,
-        users
+        users,
+        global
     },
     plugins: [cartState,authState]
 })
