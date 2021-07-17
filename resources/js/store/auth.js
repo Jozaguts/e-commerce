@@ -5,6 +5,7 @@ const auth = {
     state: {
         isAuthenticated: false,
         token:'',
+        currentUser: undefined
     },
     mutations: {
         SET_TOKEN(state,token) {
@@ -15,6 +16,9 @@ const auth = {
         },
         DELETE_TOKEN(state) {
             state.token = undefined;
+        },
+        SET_CURRENT_USER(state, user) {
+            state.currentUser =  user
         }
     },
     actions: {
@@ -24,8 +28,8 @@ const auth = {
                 if( data.success ) {
                     commit('SET_TOKEN', data['access_token'])
                     commit('AUTHENTICATED')
-                    commit('users/SET_CURRENT_USER',data.data,{root:true})
-                      window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data['access_token']
+                    commit('SET_CURRENT_USER',data.data)
+                    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data['access_token']
                     return true
                 }
             }catch(error) {

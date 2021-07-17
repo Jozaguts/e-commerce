@@ -3283,7 +3283,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     currentUserId: function currentUserId() {
-      return this.$store.state.users.currentUser.id;
+      return this.$store.state.auth.currentUser['id'];
     }
   },
   beforeCreate: function beforeCreate() {
@@ -3546,7 +3546,8 @@ var auth = {
   namespaced: true,
   state: {
     isAuthenticated: false,
-    token: ''
+    token: '',
+    currentUser: undefined
   },
   mutations: {
     SET_TOKEN: function SET_TOKEN(state, token) {
@@ -3557,6 +3558,9 @@ var auth = {
     },
     DELETE_TOKEN: function DELETE_TOKEN(state) {
       state.token = undefined;
+    },
+    SET_CURRENT_USER: function SET_CURRENT_USER(state, user) {
+      state.currentUser = user;
     }
   },
   actions: {
@@ -3584,9 +3588,7 @@ var auth = {
 
                 commit('SET_TOKEN', data['access_token']);
                 commit('AUTHENTICATED');
-                commit('users/SET_CURRENT_USER', data.data, {
-                  root: true
-                });
+                commit('SET_CURRENT_USER', data.data);
                 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data['access_token'];
                 return _context.abrupt("return", true);
 
@@ -4142,8 +4144,7 @@ var users = {
   namespaced: true,
   state: {
     users: [],
-    user: undefined,
-    currentUser:  false || localStorage.getItem('currentUser')
+    user: undefined
   },
   mutations: {
     SET_USERS: function SET_USERS(state, users) {
@@ -4151,10 +4152,6 @@ var users = {
     },
     SET_USER: function SET_USER(state, user) {
       state.user = user;
-    },
-    SET_CURRENT_USER: function SET_CURRENT_USER(state, user) {
-      window.localStorage.setItem('currentUser', JSON.stringify(user));
-      state.currentUser = user;
     }
   },
   actions: {
@@ -4345,7 +4342,8 @@ var users = {
         }, _callee5);
       }))();
     }
-  }
+  },
+  getters: {}
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (users);
 

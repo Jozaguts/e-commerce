@@ -3,7 +3,6 @@ const users = {
     state: {
        users: [],
         user: undefined,
-        currentUser: "" || localStorage.getItem('currentUser'),
     },
     mutations: {
         SET_USERS(state, users) {
@@ -12,10 +11,7 @@ const users = {
         SET_USER(state, user) {
             state.user = user
         },
-        SET_CURRENT_USER(state, user) {
-            window.localStorage.setItem('currentUser',JSON.stringify(user))
-            state.currentUser =  user
-        }
+
     },
     actions: {
         async getUsers({commit}) {
@@ -88,5 +84,6 @@ const users = {
                 .catch( e => console.log(e.message))
         },
     },
+    getters:{}
 }
 export default users

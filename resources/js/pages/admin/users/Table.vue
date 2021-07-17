@@ -44,7 +44,8 @@ export default {
     components:{ DeleteBtn },
     computed:{
         currentUserId() {
-            return  this.$store.state.users.currentUser.id
+
+            return  this.$store.state.auth.currentUser['id']
         }
     },
     beforeCreate () {
