@@ -20,7 +20,6 @@ const products = {
         async getProducts( { commit }) {
             try {
              let { data } = await axios.get(`/api/products`)
-                console.log( data.data)
                 commit('SET_PRODUCTS', data.data)
                 delete data.data
                 commit('SET_PAGINATION', data)
@@ -47,6 +46,7 @@ const products = {
                     }
                 )
                 commit('global/MESSAGE_HANDLER',data.message,{ root: true })
+                return {success:true}
             }catch (error){
                 commit('global/MESSAGE_HANDLER',error.response.data,{ root: true })
                 console.error(error.response.data.message)
@@ -70,8 +70,19 @@ const products = {
                 },2000)
             }
         },
-        async create({commit, dispatch}, formData) {
-            let { data } = await axios.post('/api/products',formData)
+        async create({commit, dispatch}, {product}) {
+            try{
+                let { data } = await axios.post('/api/products', product)
+                commit('global/MESSAGE_HANDLER',data.message,{ root: true })
+                return {success:true}
+            }catch (error){
+                commit('global/MESSAGE_HANDLER',error.response.data,{ root: true })
+                console.error(error.response.data.message)
+            }finally{
+                setTimeout(()=>{
+                    commit('global/CLEAN_NOTIFICATION', null,{ root: true })
+                },2000)
+            }
 
         },
         async updateStatus({commit}, {slug}){

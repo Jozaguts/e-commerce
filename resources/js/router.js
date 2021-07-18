@@ -72,6 +72,11 @@ const router = new VueRouter({
                     component: ProductsCreateOrUpdate,
                     props: { isUpdate: true},
                 },
+                {
+                    path: 'products/create',
+                    component: ProductsCreateOrUpdate,
+                    props: { isUpdate: false},
+                },
 
             ],
             beforeEnter: (to, from, next) => {

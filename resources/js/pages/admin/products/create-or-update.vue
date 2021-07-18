@@ -77,23 +77,22 @@ export default {
         if(this.isUpdate){
             this.$store.dispatch('products/getProduct', this.$route.params.slug)
                 .then( ()=>{
-
                     this.product = this.$store.state.products.currentProduct.product_data
-                   var imageName = this.$store.state.products.currentProduct.product_data.media[0].file_name
-
-                    fetch( this.$store.state.products.currentProduct.media,{
+                   return this.$store.state.products.currentProduct.product_data.media[0].file_name
+                })
+                .then(imageName =>{
+                   return fetch( this.$store.state.products.currentProduct.media,{
                         headers: {"Content-Type": "application/json"},
                         mode: 'no-cors',
                     })
-                        .then(response=> response.blob())
-                        .then(blob =>{
-
-                            this.image.file =  new File([blob], imageName, blob)
-                            this.image.path  =  this.$store.state.products.currentProduct.media
-                        })
+                    .then(response=> response.blob())
+                    .then(blob =>{
+                        this.image.file =  new File([blob], imageName, blob)
+                        this.image.path  =  this.$store.state.products.currentProduct.media
+                    })
                 })
         }else{
-            this.product = { name:'', description:'',price:'',status:true,}
+            this.product = { name:'', description:'',price:'',status: true}
         }
     },
     methods:{
@@ -104,10 +103,25 @@ export default {
                 formData.append('name', this.product.name)
                 formData.append('description', this.product.description)
                 formData.append('price', this.product.price)
-                formData.append('status', this.product.status)
+                formData.append('status', this.product.status ?'1':'0')
                 formData.append('slug', this.product.slug)
-                formData.append('_method', 'PUT')
-                this.$store.dispatch('products/update',{slug: this.product.slug, product: formData})
+                if(this.isUpdate){
+                    formData.append('_method', 'PUT')
+                    this.$store.dispatch('products/update',{slug: this.product.slug, product: formData})
+                    .then(success=>{
+                        if (success){
+                            this.$router.push('/admin/products')
+                        }
+                    })
+                }else{
+                    this.$store.dispatch('products/create',{product: formData})
+                    .then(success=>{
+                        if (success){
+                            this.$router.push('/admin/products')
+                        }
+                    })
+                }
+
             }catch{
 
             }

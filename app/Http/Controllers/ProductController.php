@@ -35,7 +35,7 @@ class ProductController extends Controller
     public function store(ProductStoreRequest $request): JsonResponse
     {
        try{
-           dd('store');
+           $response = [];
            $product = Product::create([
                'name' => $request->get('name'),
                'description' => $request->get('description'),
@@ -45,15 +45,14 @@ class ProductController extends Controller
            ]);
 
            if($request->hasFile('image')) {
-               $product->addMedia($request->image)
-                   ->toMediaCollection();
-                $media  = $product->getFirstMedia();
-                $media->setCustomProperty('url',$media->getUrl());
-                $media->save();
-           }
-           return response()->json( [
-               'message' => $product] );
 
+               $product->addMediaFromRequest('image')
+                   ->toMediaCollection('products');
+            }
+           $response['product'] = $product;
+           $response['message'] = 'Product was created successfully';
+           $response['success'] = true;
+           return response()->json($response);
        }catch (Exception $e){
            Log::error($e->getMessage(), ['file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString()]);
            return response()->json( [
@@ -66,13 +65,6 @@ class ProductController extends Controller
         try {
 //            Todo remover public_url y solo dejar ['media']
             $response = [];
-            $mediaItems = $product->getMedia();
-            if(isset($mediaItems[0])){
-                 $response['public_url'] = $mediaItems[0]->getUrl();
-            }else{
-                  $response['public_url'] = 'https://via.placeholder.com/640x360';
-            }
-
             $response['product'] = $product;
             $response['media'] =  $product->getFirstMediaUrl('products') ?? 'https://via.placeholder.com/640x360';
             return  response()->json($response);

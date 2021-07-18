@@ -3307,8 +3307,9 @@ __webpack_require__.r(__webpack_exports__);
     if (this.isUpdate) {
       this.$store.dispatch('products/getProduct', this.$route.params.slug).then(function () {
         _this.product = _this.$store.state.products.currentProduct.product_data;
-        var imageName = _this.$store.state.products.currentProduct.product_data.media[0].file_name;
-        fetch(_this.$store.state.products.currentProduct.media, {
+        return _this.$store.state.products.currentProduct.product_data.media[0].file_name;
+      }).then(function (imageName) {
+        return fetch(_this.$store.state.products.currentProduct.media, {
           headers: {
             "Content-Type": "application/json"
           },
@@ -3331,19 +3332,36 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
+      var _this2 = this;
+
       try {
         var formData = new FormData();
         formData.append('image', this.image.file);
         formData.append('name', this.product.name);
         formData.append('description', this.product.description);
         formData.append('price', this.product.price);
-        formData.append('status', this.product.status);
+        formData.append('status', this.product.status ? '1' : '0');
         formData.append('slug', this.product.slug);
-        formData.append('_method', 'PUT');
-        this.$store.dispatch('products/update', {
-          slug: this.product.slug,
-          product: formData
-        });
+
+        if (this.isUpdate) {
+          formData.append('_method', 'PUT');
+          this.$store.dispatch('products/update', {
+            slug: this.product.slug,
+            product: formData
+          }).then(function (success) {
+            if (success) {
+              _this2.$router.push('/admin/products');
+            }
+          });
+        } else {
+          this.$store.dispatch('products/create', {
+            product: formData
+          }).then(function (success) {
+            if (success) {
+              _this2.$router.push('/admin/products');
+            }
+          });
+        }
       } catch (_unused) {}
     },
     preViewImage: function preViewImage(event) {
@@ -3810,6 +3828,12 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_11__.default({
       component: _pages_admin_products_create_or_update_vue__WEBPACK_IMPORTED_MODULE_8__.default,
       props: {
         isUpdate: true
+      }
+    }, {
+      path: 'products/create',
+      component: _pages_admin_products_create_or_update_vue__WEBPACK_IMPORTED_MODULE_8__.default,
+      props: {
+        isUpdate: false
       }
     }],
     beforeEnter: function beforeEnter(to, from, next) {
@@ -4280,24 +4304,23 @@ var products = {
               case 4:
                 _yield$axios$get = _context.sent;
                 data = _yield$axios$get.data;
-                console.log(data.data);
                 commit('SET_PRODUCTS', data.data);
                 delete data.data;
                 commit('SET_PAGINATION', data);
-                _context.next = 15;
+                _context.next = 14;
                 break;
 
-              case 12:
-                _context.prev = 12;
+              case 11:
+                _context.prev = 11;
                 _context.t0 = _context["catch"](1);
                 console.error(_context.t0.message);
 
-              case 15:
+              case 14:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 12]]);
+        }, _callee, null, [[1, 11]]);
       }))();
     },
     getProduct: function getProduct(_ref3, slug) {
@@ -4359,32 +4382,33 @@ var products = {
                 commit('global/MESSAGE_HANDLER', data.message, {
                   root: true
                 });
-                _context3.next = 14;
-                break;
+                return _context3.abrupt("return", {
+                  success: true
+                });
 
-              case 10:
-                _context3.prev = 10;
+              case 11:
+                _context3.prev = 11;
                 _context3.t0 = _context3["catch"](2);
                 commit('global/MESSAGE_HANDLER', _context3.t0.response.data, {
                   root: true
                 });
                 console.error(_context3.t0.response.data.message);
 
-              case 14:
-                _context3.prev = 14;
+              case 15:
+                _context3.prev = 15;
                 setTimeout(function () {
                   commit('global/CLEAN_NOTIFICATION', null, {
                     root: true
                   });
                 }, 2000);
-                return _context3.finish(14);
+                return _context3.finish(15);
 
-              case 17:
+              case 18:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[2, 10, 14, 17]]);
+        }, _callee3, null, [[2, 11, 15, 18]]);
       }))();
     },
     "delete": function _delete(_ref7, slug) {
@@ -4435,31 +4459,56 @@ var products = {
         }, _callee4, null, [[1, 10, 14, 17]]);
       }))();
     },
-    create: function create(_ref8, formData) {
+    create: function create(_ref8, _ref9) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
-        var commit, dispatch, _yield$axios$post2, data;
+        var commit, dispatch, product, _yield$axios$post2, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
                 commit = _ref8.commit, dispatch = _ref8.dispatch;
-                _context5.next = 3;
-                return axios.post('/api/products', formData);
-
-              case 3:
-                _yield$axios$post2 = _context5.sent;
-                data = _yield$axios$post2.data;
+                product = _ref9.product;
+                _context5.prev = 2;
+                _context5.next = 5;
+                return axios.post('/api/products', product);
 
               case 5:
+                _yield$axios$post2 = _context5.sent;
+                data = _yield$axios$post2.data;
+                commit('global/MESSAGE_HANDLER', data.message, {
+                  root: true
+                });
+                return _context5.abrupt("return", {
+                  success: true
+                });
+
+              case 11:
+                _context5.prev = 11;
+                _context5.t0 = _context5["catch"](2);
+                commit('global/MESSAGE_HANDLER', _context5.t0.response.data, {
+                  root: true
+                });
+                console.error(_context5.t0.response.data.message);
+
+              case 15:
+                _context5.prev = 15;
+                setTimeout(function () {
+                  commit('global/CLEAN_NOTIFICATION', null, {
+                    root: true
+                  });
+                }, 2000);
+                return _context5.finish(15);
+
+              case 18:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5);
+        }, _callee5, null, [[2, 11, 15, 18]]);
       }))();
     },
-    updateStatus: function updateStatus(_ref9, _ref10) {
+    updateStatus: function updateStatus(_ref10, _ref11) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
         var commit, slug, _yield$axios$patch, data;
 
@@ -4467,8 +4516,8 @@ var products = {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                commit = _ref9.commit;
-                slug = _ref10.slug;
+                commit = _ref10.commit;
+                slug = _ref11.slug;
                 _context6.prev = 2;
                 _context6.next = 5;
                 return axios.patch("/api/products/".concat(slug));
