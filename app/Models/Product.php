@@ -34,4 +34,6 @@ class Product extends Model implements HasMedia
             ->addMediaCollection('products')
             ->singleFile();
     }
+
+
 }

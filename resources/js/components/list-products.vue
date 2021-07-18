@@ -11,7 +11,7 @@
                 >
                     <v-img
                         height="250"
-                        :src="getImage(product.media)"
+                        :src="product.media_url"
                     ></v-img>
 
                 <v-card-title>{{ product.name }}</v-card-title>
@@ -71,10 +71,6 @@ export default {
         }
     },
     methods: {
-        getImage(media){
-            console.log(media[0]?.custom_properties.url)
-            return media[0]?.custom_properties.url
-        },
         init() {
             return this.$store.dispatch('products/getProducts')
         },

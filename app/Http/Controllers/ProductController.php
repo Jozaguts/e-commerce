@@ -17,7 +17,12 @@ class ProductController extends Controller
 {
     public function index(Request $request) {
         try {
-          $products =  Product::with('media')->paginate(9);
+          $products =  Product::paginate(9);
+          $products->map(function($item) {
+             $item['media_url'] = $item->getFirstMediaUrl('products') ?? 'https://via.placeholder.com/640x360';
+             return $item;
+          });
+
           return response()->json($products);
         }catch(Exception $e){
             return response()->json( [

@@ -2179,12 +2179,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    getImage: function getImage(media) {
-      var _media$, _media$2;
-
-      console.log((_media$ = media[0]) === null || _media$ === void 0 ? void 0 : _media$.custom_properties.url);
-      return (_media$2 = media[0]) === null || _media$2 === void 0 ? void 0 : _media$2.custom_properties.url;
-    },
     init: function init() {
       return this.$store.dispatch('products/getProducts');
     },
@@ -4286,23 +4280,24 @@ var products = {
               case 4:
                 _yield$axios$get = _context.sent;
                 data = _yield$axios$get.data;
+                console.log(data.data);
                 commit('SET_PRODUCTS', data.data);
                 delete data.data;
                 commit('SET_PAGINATION', data);
-                _context.next = 14;
+                _context.next = 15;
                 break;
 
-              case 11:
-                _context.prev = 11;
+              case 12:
+                _context.prev = 12;
                 _context.t0 = _context["catch"](1);
                 console.error(_context.t0.message);
 
-              case 14:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 11]]);
+        }, _callee, null, [[1, 12]]);
       }))();
     },
     getProduct: function getProduct(_ref3, slug) {
@@ -24921,7 +24916,7 @@ var render = function() {
                   },
                   [
                     _c("v-img", {
-                      attrs: { height: "250", src: _vm.getImage(product.media) }
+                      attrs: { height: "250", src: product.media_url }
                     }),
                     _vm._v(" "),
                     _c("v-card-title", [_vm._v(_vm._s(product.name))]),

@@ -20,6 +20,7 @@ const products = {
         async getProducts( { commit }) {
             try {
              let { data } = await axios.get(`/api/products`)
+                console.log( data.data)
                 commit('SET_PRODUCTS', data.data)
                 delete data.data
                 commit('SET_PAGINATION', data)
