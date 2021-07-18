@@ -1987,14 +1987,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Login",
   data: function data() {
     return {
       show: false,
       credentials: {
-        email: '',
-        password: ''
+        email: 'admin@test.com',
+        password: 'password'
       },
       emailRules: [function (v) {
         return !!v || 'E-mail is required';
@@ -2084,7 +2097,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(e.message);
       } finally {
         setTimeout(function () {
-          _this.$store.commit('cart/TOGGLE_SNACKBAR', 'ADDED PRODUCT');
+          _this.$store.commit('cart/TOGGLE_SNACKBAR', 'Product Added');
         }, 300);
       }
     }
@@ -24877,6 +24890,36 @@ var render = function() {
               )
             ],
             1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            [
+              _c(
+                "v-col",
+                { attrs: { cols: "6 offset-3 d-flex flex-column" } },
+                [
+                  _c("small", { staticClass: "text-caption" }, [
+                    _vm._v(
+                      "\n                  email: admin@test.com\n              "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("small", { staticClass: "text-caption" }, [
+                    _vm._v(
+                      "\n                    password: password\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("small", { staticClass: "text-caption" }, [
+                    _vm._v(
+                      "\n                    Check all instructions at readme.md\n                "
+                    )
+                  ])
+                ]
+              )
+            ],
+            1
           )
         ],
         1
@@ -26153,7 +26196,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("v-img", {
                         attrs: {
-                          src: _vm.currentProduct.url,
+                          src: _vm.currentProduct.media,
                           "max-height": "300"
                         }
                       }),
