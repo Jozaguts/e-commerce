@@ -10,9 +10,9 @@
                     description
                 </th>  <th class="text-center text-capitalize">
                 price
-                </th>
+            </th>
                 <th class="text-center text-capitalize ">
-                status
+                    status
                 </th>
                 <th class="text-center text-capitalize">
                     actions
@@ -65,14 +65,9 @@
 <script>
 export default {
     name: "Table",
-    computed:{
-        currentUserId() {
-
-        }
-    },
     methods:{
         update( product ) {
-          this.$store.dispatch('products/update',product)
+          this.$store.dispatch('products/updateStatus', { slug: product.slug })
       }
     },
     beforeCreate () {

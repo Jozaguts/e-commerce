@@ -72,7 +72,7 @@ export default {
     },
     methods: {
         getImage(media){
-
+            console.log(media[0]?.custom_properties.url)
             return media[0]?.custom_properties.url
         },
         init() {

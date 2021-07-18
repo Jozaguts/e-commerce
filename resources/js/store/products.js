@@ -12,8 +12,8 @@ const products = {
         SET_PAGINATION(state, paginator) {
             state.pagination = paginator
         },
-        SET_CURRENT_PRODUCT(state, { product_data, url }){
-            state.currentProduct ={ product_data, url }
+        SET_CURRENT_PRODUCT(state, { product_data, media }){
+            state.currentProduct ={ product_data, media }
         },
     },
     actions: {
@@ -31,15 +31,20 @@ const products = {
             try{
                 return await axios.get(`/api/products/${slug}`)
                     .then(({data})=>{
-                     commit('SET_CURRENT_PRODUCT',{ product_data: data.product, url: data.public_url } )
+                     commit('SET_CURRENT_PRODUCT',{ product_data: data.product, media: data.media } )
                     })
             }catch (e) {
                 console.error(e.message)
             }
         },
-        async update({commit},product ) {
+        async update({commit}, {slug, product} ) {
             try{
-                let {data} = await axios.put(`/api/products/${product.slug}`, product )
+                let {data} = await axios.post(`/api/products/${slug}`,  product,
+                    {
+                        '_method': 'PUT',
+                        headers: {'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'}
+                    }
+                )
                 commit('global/MESSAGE_HANDLER',data.message,{ root: true })
             }catch (error){
                 commit('global/MESSAGE_HANDLER',error.response.data,{ root: true })
@@ -63,8 +68,24 @@ const products = {
                     commit('global/CLEAN_NOTIFICATION', null,{ root: true })
                 },2000)
             }
-        }
+        },
+        async create({commit, dispatch}, formData) {
+            let { data } = await axios.post('/api/products',formData)
 
+        },
+        async updateStatus({commit}, {slug}){
+            try{
+                let { data } = await axios.patch(`/api/products/${slug}`)
+                commit('global/MESSAGE_HANDLER',data.message,{ root: true })
+            }catch(error){
+                commit('global/MESSAGE_HANDLER',error.response.data,{ root: true })
+                console.error(error.response.data.message)
+            }finally{
+                setTimeout(()=>{
+                    commit('global/CLEAN_NOTIFICATION', null,{ root: true })
+                },2000)
+            }
+        }
     },
     getters: {
         getProducts(state) {

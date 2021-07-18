@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth:api','prefix'=>'/users'],  function() {
 });
 Route::get('/products', [ProductController::class,'index']);
 Route::get('/products/{product:slug}', [ProductController::class,'show']);
+Route::patch('/products/{product:slug}', [ProductController::class,'toggleStatus']);
 
 Route::group(['middleware' => 'auth:api','prefix'=> '/products'],function() {
     Route::post('',[ProductController::class, 'store']);

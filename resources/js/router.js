@@ -13,6 +13,7 @@ import Admin from './pages/admin/index.vue'
 import Login from './components/Auth/Login.vue'
 import UsersHome from './pages/admin/users/index.vue';
 import UserCreateOrUpdate from './pages/admin/users/create-or-update.vue'
+import ProductsCreateOrUpdate from './pages/admin/products/create-or-update.vue'
 import ProductsHome from './pages/admin/products/index.vue'
 
 Vue.use(VueRouter)
@@ -65,6 +66,11 @@ const router = new VueRouter({
                 {
                     path: 'products',
                     component: ProductsHome,
+                },
+                {
+                    path: 'products/update/:slug',
+                    component: ProductsCreateOrUpdate,
+                    props: { isUpdate: true},
                 },
 
             ],

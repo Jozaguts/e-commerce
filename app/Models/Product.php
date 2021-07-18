@@ -27,4 +27,11 @@ class Product extends Model implements HasMedia
             ->width(375)
             ->height(250);
     }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('products')
+            ->singleFile();
+    }
 }

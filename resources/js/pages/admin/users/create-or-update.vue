@@ -60,11 +60,6 @@ export default {
             user:{},
             loading: false,
             show:false,
-            alert: {
-                message: '',
-                type: 'success',
-                show: false
-            },
             rules: {
                 required: value => !!value || 'Required.',
                 emailMatch: () => (`The email and password you entered don't match`),
