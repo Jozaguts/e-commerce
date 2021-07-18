@@ -18,7 +18,7 @@
                            {{currentProduct.product_data.description}}
                        </v-card-text>
                        <v-img
-                       :src="currentProduct.url"
+                       :src="currentProduct.media"
                        max-height="300"
                        >
                        </v-img>
