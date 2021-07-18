@@ -40,7 +40,7 @@ export default {
                 console.log(e.message)
             }finally {
                 setTimeout(()=>{
-                    this.$store.commit('cart/TOGGLE_SNACKBAR','ADDED PRODUCT')
+                    this.$store.commit('cart/TOGGLE_SNACKBAR','Product Added')
                 },300)
             }
         }
