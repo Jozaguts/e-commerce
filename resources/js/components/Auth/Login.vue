@@ -43,6 +43,19 @@
                     </v-alert>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col cols="6 offset-3 d-flex flex-column">
+                  <small class="text-caption">
+                      email: admin@test.com
+                  </small>
+                    <small class="text-caption">
+                        password: password
+                    </small>
+                    <small class="text-caption">
+                        Check all instructions at readme.md
+                    </small>
+                </v-col>
+            </v-row>
         </v-container>
     </v-form>
 </template>
@@ -54,8 +67,8 @@ export default {
         return {
             show:false,
             credentials:{
-                email:'',
-                password:'',
+                email:'admin@test.com',
+                password:'password',
             },
             emailRules: [
                 v => !!v || 'E-mail is required',

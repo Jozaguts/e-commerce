@@ -55,12 +55,12 @@ Admin Facing Routes:
 ##init:
 
     composer install
-    php artisan passport:install
     php artisan migrate --seed
+    php artisan passport:install
     npm install
-
+    npm run prod/dev
 ##run:
 
     php artisan serve 
     npm run watch
-make sure that you are running on port 8000 and localhost http://127.0.0.1 if isn't you can change your proxy on laravelmix file webpack.mix.js
+make sure that you are running on port 8000 and localhost/ http://127.0.0.1 if isn't you can change your proxy on laravelmix file webpack.mix.js
