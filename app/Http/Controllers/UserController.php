@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-
+    //TODO implement API RESOURCE
+    //TODO implement repository pattern
     public function index(): JsonResponse
     {
         try{

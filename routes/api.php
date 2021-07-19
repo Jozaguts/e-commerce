@@ -17,13 +17,15 @@ Route::group(['middleware' => 'auth:api','prefix'=>'/users'],  function() {
    Route::delete('/{user}',[ UserController::class, 'destroy' ]);
    Route::post('/logout',[ LoginController::class, 'logout']);
 });
+
 Route::get('/products', [ProductController::class,'index']);
 Route::get('/products/{product:slug}', [ProductController::class,'show']);
-Route::patch('/products/{product:slug}', [ProductController::class,'toggleStatus']);
+
 
 Route::group(['middleware' => 'auth:api','prefix'=> '/products'],function() {
     Route::post('',[ProductController::class, 'store']);
-    Route::put('/{product:slug}',[ProductController::class, 'update']);
-    Route::delete('/{product:slug}',[ProductController::class, 'destroy']);
+    Route::patch('/{slug}', [ProductController::class,'toggleStatus']);
+    Route::put('/{slug}',[ProductController::class, 'update']);
+    Route::delete('/{slug}',[ProductController::class, 'destroy']);
 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
+use App\Repository\ProductRepositoryInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,40 +16,31 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function index(Request $request) {
+    private ProductRepositoryInterface $productRepository;
+    const IMAGE_PLACEHOLDER = 'https://via.placeholder.com/640x360';
+    //TODO pagination on front
+    //TODO implement API RESOURCE
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository =  $productRepository;
+    }
+    public function index(Request $request): JsonResponse
+    {
         try {
-          $products =  Product::paginate(9);
-          $products->map(function($item) {
-             $item['media_url'] = $item->getFirstMediaUrl('products') ?? 'https://via.placeholder.com/640x360';
-             return $item;
-          });
 
+          $products = $this->productRepository->all();
           return response()->json($products);
         }catch(Exception $e){
             return response()->json( [
                 'message' => $e->getMessage()
             ], 400 );
         }
-
-
     }
     public function store(ProductStoreRequest $request): JsonResponse
     {
        try{
            $response = [];
-           $product = Product::create([
-               'name' => $request->get('name'),
-               'description' => $request->get('description'),
-               'price' => $request->get('price'),
-               'status' => $request->get('status'),
-               'slug' => Str::slug($request->get('name'))
-           ]);
-
-           if($request->hasFile('image')) {
-
-               $product->addMediaFromRequest('image')
-                   ->toMediaCollection('products');
-            }
+           $product = $this->productRepository->save($request);
            $response['product'] = $product;
            $response['message'] = 'Product was created successfully';
            $response['success'] = true;
@@ -60,13 +52,12 @@ class ProductController extends Controller
            ], 400);
        }
     }
-    public function show(Product $product)
+    public function show(Product $product): JsonResponse
     {
         try {
-//            Todo remover public_url y solo dejar ['media']
             $response = [];
             $response['product'] = $product;
-            $response['media'] =  $product->getFirstMediaUrl('products') ?? 'https://via.placeholder.com/640x360';
+            $response['media'] =  $product->getFirstMediaUrl('products') ?? self::IMAGE_PLACEHOLDER;
             return  response()->json($response);
         }catch(Exception $e){
             return response()->json( [
@@ -74,25 +65,12 @@ class ProductController extends Controller
             ], 400 );
         }
     }
-    public function update(ProductUpdateRequest $request, Product $product): JsonResponse
+    public function update(ProductUpdateRequest $request, $slug): JsonResponse
     {
         try{
             $response = [];
-            $product->update([
-                'name' => $request->get('name'),
-                'description' => $request->get('description'),
-                'price' => $request->get('price'),
-                'status' => $request->get('status'),
-                'slug' =>  Str::slug($request->get('name')),
-            ]);
-            if($request->hasFile('image')) {
-                $product->addMediaFromRequest('image')
-                    ->toMediaCollection('products');
-//                $product->getMedia('products')->count();
-
-            }
-
-            $response['media'] =  $product->getFirstMediaUrl('products') ?? 'https://via.placeholder.com/640x360';
+            $product = $this->productRepository->update($slug,$request);
+            $response['media'] =  $product->getFirstMediaUrl('products') ?? self::IMAGE_PLACEHOLDER;
             $response['product'] = $product;
             $response['success'] = true;
             $response['message'] ='Product was uploaded successfully';
@@ -105,12 +83,11 @@ class ProductController extends Controller
             ],  401 );
         }
     }
-    public function toggleStatus(Product $product): JsonResponse
+    public function toggleStatus($slug): JsonResponse
     {
         try{
             $response = [];
-            $product->status = !$product->status;
-            $product->save();
+            $product = $this->productRepository->toggleStatus($slug);
             $response['message'] = 'Status was changed successfully';
             $response['product'] = $product;
             return response()->json($response,201);
@@ -121,11 +98,11 @@ class ProductController extends Controller
             ],  401 );
         }
     }
-    public function destroy(Product $product): JsonResponse
+    public function destroy($slug): JsonResponse
     {
         try {
-            $product->delete();
-            return response()->json(['message' => 'Product was deleted successfully'],200);
+           $response = $this->productRepository->destroy('slug', $slug);
+            return response()->json($response,200);
         }catch(Exception $e){
             return response()->json( [
                 'message' => $e->getMessage()
